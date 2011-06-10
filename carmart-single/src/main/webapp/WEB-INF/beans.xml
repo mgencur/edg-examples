@@ -8,6 +8,7 @@
       <!-- comment the alternative out when an in-VM mode is ready -->
       <alternatives>
           <class>org.jboss.edg.examples.carmartsingle.session.RemoteCacheContainerProvider</class>
+<!--           <class>org.jboss.edg.examples.carmartsingle.session.RemoteStatisticsProvider</class> -->
       </alternatives>
       
 </beans>

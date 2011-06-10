@@ -21,47 +21,54 @@
  */
 package org.jboss.edg.examples.carmartsingle.session;
 
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Alternative;
+import javax.enterprise.inject.Specializes;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.infinispan.stats.Stats;
+import org.infinispan.client.hotrod.RemoteCache;
+import org.infinispan.client.hotrod.ServerStatistics;
 
-//@Named("stats")
-//@RequestScoped
-public class StatisticsProvider {
+@Named("stats")
+@RequestScoped
+//@Alternative
+//@Specializes
+public class RemoteStatisticsProvider extends StatisticsProvider {
    
    @Inject
    private CacheContainerProvider provider;
    
-   private Stats stats;
+   private Map<String, String> stats;
    
    @PostConstruct
    public void getStatsObject() {
-      stats = provider.getCacheContainer().getCache(CarManager.CACHE_NAME).getAdvancedCache().getStats();
+      RemoteCache<String, Object> carCache = (RemoteCache) provider.getCacheContainer().getCache(CarManager.CACHE_NAME);
+      stats = carCache.stats().getStatsMap(); 
    }
    
    public String getRetrievals() {
-      return String.valueOf(stats.getRetrievals());
+      return stats.get(ServerStatistics.RETRIEVALS);
    }
 
    public String getStores() {
-      return String.valueOf(stats.getStores());
+      return stats.get(ServerStatistics.STORES);
    }
 
    public String getTotalEntries() {
-      return String.valueOf(stats.getTotalNumberOfEntries());
+      return stats.get(ServerStatistics.TOTAL_NR_OF_ENTRIES);
    }
 
    public String getHits() {
-      return String.valueOf(stats.getHits());
+      return stats.get(ServerStatistics.HITS);
    }
    
    public String getMisses() {
-      return String.valueOf(stats.getMisses());
+      return stats.get(ServerStatistics.MISSES);
    }
    
    public String getRemoveHits() {
-      return String.valueOf(stats.getRemoveMisses());
+      return stats.get(ServerStatistics.REMOVE_HITS);
    }
 }
