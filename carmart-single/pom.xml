@@ -14,6 +14,10 @@
 		<infinispan.version>5.0.0.CR4</infinispan.version>
 		<hotrod.client.version>5.0.0.CR4</hotrod.client.version>
 		<jboss-as-maven-plugin-version>7.0.0.Beta4</jboss-as-maven-plugin-version>
+		
+		<!-- Defaults -->
+		<jboss-as-management-port>9999</jboss-as-management-port>
+		<jboss-as-management-port>localhost</jboss-as-management-port>
 	</properties>
 
 	<dependencies>
@@ -150,6 +154,10 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<port>${jboss-as-management-port}</port>
+					<host>${jboss-as-management-host}</host>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
