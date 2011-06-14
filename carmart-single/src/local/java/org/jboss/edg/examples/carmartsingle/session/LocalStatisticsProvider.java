@@ -21,54 +21,47 @@
  */
 package org.jboss.edg.examples.carmartsingle.session;
 
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Alternative;
-import javax.enterprise.inject.Specializes;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.infinispan.client.hotrod.RemoteCache;
-import org.infinispan.client.hotrod.ServerStatistics;
+import org.infinispan.stats.Stats;
 
 @Named("stats")
 @RequestScoped
-//@Alternative
-//@Specializes
-public class RemoteStatisticsProvider extends StatisticsProvider {
+public class LocalStatisticsProvider implements StatisticsProvider {
    
    @Inject
-   private CacheContainerProvider provider;
+   private LocalCacheContainerProvider provider;
    
-   private Map<String, String> stats;
+   private Stats stats;
    
    @PostConstruct
    public void getStatsObject() {
-      RemoteCache<String, Object> carCache = (RemoteCache) provider.getCacheContainer().getCache(CarManager.CACHE_NAME);
-      stats = carCache.stats().getStatsMap(); 
+      stats = provider.getCacheContainer().getCache(CarManager.CACHE_NAME).getAdvancedCache().getStats();
    }
    
    public String getRetrievals() {
-      return stats.get(ServerStatistics.RETRIEVALS);
+      return String.valueOf(stats.getRetrievals());
    }
 
    public String getStores() {
-      return stats.get(ServerStatistics.STORES);
+      return String.valueOf(stats.getStores());
    }
 
    public String getTotalEntries() {
-      return stats.get(ServerStatistics.TOTAL_NR_OF_ENTRIES);
+      return String.valueOf(stats.getTotalNumberOfEntries());
    }
 
    public String getHits() {
-      return stats.get(ServerStatistics.HITS);
+      return String.valueOf(stats.getHits());
    }
    
    public String getMisses() {
-      return stats.get(ServerStatistics.MISSES);
+      return String.valueOf(stats.getMisses());
    }
    
    public String getRemoveHits() {
-      return stats.get(ServerStatistics.REMOVE_HITS);
+      return String.valueOf(stats.getRemoveMisses());
    }
 }

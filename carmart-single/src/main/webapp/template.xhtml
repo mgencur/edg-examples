@@ -33,8 +33,8 @@
   </div>
   
   <div id="statistics">
-     <h:outputText value="Statistics around operations with cache entries"/>
-     <h:panelGrid columns="2">
+     <h:outputText value="Statistics around operations with cache entries" styleClass="statsTitle"/>
+     <h:panelGrid columns="2" styleClass="innerContent">
         <h:outputLabel value="Retrievals:" /><h:outputText value="#{stats.retrievals}" />
         <h:outputLabel value="Stores:" /><h:outputText value="#{stats.stores}" />
         <h:outputLabel value="Total Entries:" /><h:outputText value="#{stats.totalEntries}" />

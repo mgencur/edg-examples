@@ -8,8 +8,8 @@
 <ui:composition template="template.xhtml">
 
     <ui:define name="mainarea">
-        <h:outputText value="Car Details"/>
-        <h:panelGrid columns="2">
+        <h:outputText value="Car Details" styleClass="carsTitle"/>
+        <h:panelGrid columns="2" styleClass="innerContent">
             <h:outputLabel value="Car Number Plate:" /><h:outputText value="#{carManager.car.numberPlate}" />
             <h:outputLabel value="Country:" /><h:outputText value="#{carManager.car.country}" />
             <h:outputLabel value="Brand:" /><h:outputText value="#{carManager.car.brand}" />

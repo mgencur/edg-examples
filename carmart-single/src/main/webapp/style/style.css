@@ -29,8 +29,27 @@ div.menuitem {
   float: left;
   margin-left: 4px;
   margin-right: 4px;
-  padding-top: 19px;  
+  padding-top: 22px;  
   height: 100%;
+}
+
+.statsTitle,.carsTitle {
+  color: #717283;
+  font-weight:bold;
+  font-size:16px;
+  padding-bottom: 15px;
+}
+
+.numberPlate {
+	 paddding-left: 50px;
+}
+
+td.link a {
+	font-size:14px;
+}
+
+.innerContent {
+  margin-top:15px;
 }
 
 div.menuitem a, div.menuitem a:visited {
@@ -43,7 +62,7 @@ div.menuitem a, div.menuitem a:visited {
 div.menuitem a:hover {
   margin-left: 8px;
   margin-right: 8px;  
-  color: #f6ae00;
+  color: #465fbd;
 }
 
 div#topseparator {
@@ -83,4 +102,6 @@ div.apptitle {
   padding-top: 19px;  
   height: 100%;
   font-size: 20px;
+  color: #465fbd;
+  font-stretch: wider;
 }

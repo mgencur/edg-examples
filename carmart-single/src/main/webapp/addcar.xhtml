@@ -8,10 +8,10 @@
 <ui:composition template="template.xhtml">
 
     <ui:define name="mainarea">
-        <h:outputText value="Add a new car to the Car Mart" />
+        <h:outputText value="Add a new car to the Car Mart" styleClass="carsTitle"/>
         <h:form>
             <h:messages style="color: red" />
-            <h:panelGrid columns="2">
+            <h:panelGrid columns="2" styleClass="innerContent">
                 <h:outputLabel value="Number Plate:" for="numberPlate" />
                 <h:inputText id ="numberPlate" value="#{carManager.car.numberPlate}" required="true" 
                     requiredMessage="Must enter a car number"/>

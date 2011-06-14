@@ -21,47 +21,20 @@
  */
 package org.jboss.edg.examples.carmartsingle.session;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.infinispan.stats.Stats;
-
-//@Named("stats")
-//@RequestScoped
-public class StatisticsProvider {
+public interface StatisticsProvider {
    
-   @Inject
-   private CacheContainerProvider provider;
+   public void getStatsObject();
    
-   private Stats stats;
+   public String getRetrievals();
    
-   @PostConstruct
-   public void getStatsObject() {
-      stats = provider.getCacheContainer().getCache(CarManager.CACHE_NAME).getAdvancedCache().getStats();
-   }
+   public String getStores();
    
-   public String getRetrievals() {
-      return String.valueOf(stats.getRetrievals());
-   }
-
-   public String getStores() {
-      return String.valueOf(stats.getStores());
-   }
-
-   public String getTotalEntries() {
-      return String.valueOf(stats.getTotalNumberOfEntries());
-   }
-
-   public String getHits() {
-      return String.valueOf(stats.getHits());
-   }
+   public String getTotalEntries();
    
-   public String getMisses() {
-      return String.valueOf(stats.getMisses());
-   }
+   public String getHits();
    
-   public String getRemoveHits() {
-      return String.valueOf(stats.getRemoveMisses());
-   }
+   public String getMisses();
+   
+   public String getRemoveHits();
+   
 }

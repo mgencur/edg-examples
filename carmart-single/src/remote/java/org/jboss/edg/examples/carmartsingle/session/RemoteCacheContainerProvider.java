@@ -40,9 +40,7 @@ import org.infinispan.manager.CacheContainer;
  * 
  */
 @ApplicationScoped
-@Alternative
-@Specializes
-public class RemoteCacheContainerProvider extends CacheContainerProvider {
+public class RemoteCacheContainerProvider implements CacheContainerProvider {
 
    private Logger log = Logger.getLogger(this.getClass().getName());
    

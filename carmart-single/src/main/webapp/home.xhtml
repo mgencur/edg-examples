@@ -8,11 +8,11 @@
 <ui:composition template="template.xhtml">
 
 	<ui:define name="mainarea">
-
-		<h:dataTable value="#{carManager.carList}" var="car">
+        <h:outputText value="List of available cars" styleClass="carsTitle"/>
+		<h:dataTable value="#{carManager.carList}" var="car" styleClass="innerContent" columnClasses="numberPlate,link,link">
 			<h:column>
-				<f:facet name="header">Car's number plate</f:facet>
-                #{car}
+<!--				<f:facet name="header">Car ID</f:facet>-->
+                #{car} &nbsp;
             </h:column>
 			<h:column>
 				<h:commandLink value="View" action="#{carManager.showCarDetails(car)}" />

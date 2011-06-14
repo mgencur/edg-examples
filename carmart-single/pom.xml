@@ -153,6 +153,62 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+        <profile>
+            <id>remote</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>add-source</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>add-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>src/remote/java</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                      </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>local</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>add-source</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>add-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>src/local/java</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                      </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 	<!-- <scm> <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/examples/trunk/jsf/pastecode</connection> 
 		<developerConnection>scm:svn:https://svn.jboss.org/repos/weld/examples/trunk/jsf/pastecode</developerConnection> 
