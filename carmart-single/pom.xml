@@ -13,7 +13,11 @@
 		<seam.faces.version>3.0.0.Final</seam.faces.version>
 		<infinispan.version>5.0.0.CR4</infinispan.version>
 		<hotrod.client.version>5.0.0.CR4</hotrod.client.version>
-		<jboss-as-maven-plugin-version>7.0.0.Beta4</jboss-as-maven-plugin-version>
+		<jboss-as-maven-plugin-version>7.0.0.Beta4-SNAPSHOT</jboss-as-maven-plugin-version>
+		
+		<!-- Defaults -->
+		<jboss-as-management-port>9999</jboss-as-management-port>
+		<jboss-as-management-port>localhost</jboss-as-management-port>
 	</properties>
 
 	<dependencies>
@@ -150,6 +154,10 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<port>${jboss-as-management-port}</port>
+					<host>${jboss-as-management-host}</host>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -208,6 +216,32 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+          <id>rest</id>
+          <build>
+              <plugins>
+                  <plugin>
+                      <groupId>org.codehaus.mojo</groupId>
+                      <artifactId>build-helper-maven-plugin</artifactId>
+                      <executions>
+                          <execution>
+                              <id>add-source</id>
+                              <phase>generate-sources</phase>
+                              <goals>
+                                  <goal>add-source</goal>
+                              </goals>
+                              <configuration>
+                                  <sources>
+                                      <source>src/rest/java</source>
+                                  </sources>
+                              </configuration>
+                          </execution>
+                      </executions>
+                    </plugin>
+              </plugins>
+          </build>
+      </profile>
+
     </profiles>
 
 	<!-- <scm> <connection>scm:svn:http://anonsvn.jboss.org/repos/weld/examples/trunk/jsf/pastecode</connection> 

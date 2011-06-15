@@ -21,12 +21,13 @@
  */
 package org.jboss.edg.examples.carmartsingle.session;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.enterprise.inject.Model;
-import javax.inject.Inject;
 import org.infinispan.Cache;
 import org.jboss.edg.examples.carmartsingle.model.Car;
+
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 
@@ -53,10 +54,16 @@ public class CarManager
    public String addNewCar() {
       carCache = provider.getCacheContainer().getCache(CACHE_NAME);
       carCache.put(car.getNumberPlate(), car);
-      List<String> carNumbers = (ArrayList<String>) carCache.get(CAR_NUMBERS_KEY);
+      List<String> carNumbers = getNumberPlateList();
+      if (carNumbers == null) carNumbers = new LinkedList<String>();
       carNumbers.add(car.getNumberPlate());
       carCache.replace(CAR_NUMBERS_KEY, carNumbers);
       return "home";
+   }
+
+   @SuppressWarnings("unchecked")
+   private List<String> getNumberPlateList() {
+      return (List<String>) carCache.get(CAR_NUMBERS_KEY);
    }
    
    public String showCarDetails(String numberPlate) {
@@ -69,14 +76,13 @@ public class CarManager
       //retrieve a cache
       carCache = provider.getCacheContainer().getCache(CACHE_NAME);
       //retrieve a list of number plates from the cache
-      List<String> carNumbers = (ArrayList<String>) carCache.get(CAR_NUMBERS_KEY);
-      return carNumbers;
+      return getNumberPlateList();
    }
    
    public String removeCar(String numberPlate) {
        carCache = provider.getCacheContainer().getCache(CACHE_NAME);
        carCache.remove(numberPlate);
-       List<String> carNumbers = (ArrayList<String>) carCache.get(CAR_NUMBERS_KEY);
+       List<String> carNumbers = getNumberPlateList();
        carNumbers.remove(numberPlate);
        carCache.replace(CAR_NUMBERS_KEY, carNumbers);
        return null;
