@@ -13,7 +13,7 @@
 		<seam.faces.version>3.0.0.Final</seam.faces.version>
 		<infinispan.version>5.0.0.CR4</infinispan.version>
 		<hotrod.client.version>5.0.0.CR4</hotrod.client.version>
-		<jboss-as-maven-plugin-version>7.0.0.Beta4-SNAPSHOT</jboss-as-maven-plugin-version>
+		<jboss-as-maven-plugin-version>7.0.0.Beta4</jboss-as-maven-plugin-version>
 		
 		<!-- Defaults -->
 		<jboss-as-management-port>9999</jboss-as-management-port>
@@ -21,14 +21,6 @@
 	</properties>
 
 	<dependencies>
-
-		<!-- <dependency> -->
-		<!-- <groupId>org.testng</groupId> -->
-		<!-- <artifactId>testng</artifactId> -->
-		<!-- <scope>test</scope> -->
-		<!-- <classifier>jdk15</classifier> -->
-		<!-- </dependency> -->
-
 
 		<dependency>
 			<groupId>org.infinispan</groupId>
@@ -154,10 +146,12 @@
 						</goals>
 					</execution>
 				</executions>
+<!--
 				<configuration>
 					<port>${jboss-as-management-port}</port>
 					<host>${jboss-as-management-host}</host>
 				</configuration>
+-->
 			</plugin>
 		</plugins>
 	</build>
