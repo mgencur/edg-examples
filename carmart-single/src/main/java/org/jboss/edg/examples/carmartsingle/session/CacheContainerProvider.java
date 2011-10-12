@@ -21,10 +21,25 @@
  */
 package org.jboss.edg.examples.carmartsingle.session;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Properties;
+
 import org.infinispan.manager.CacheContainer;
 
-public interface CacheContainerProvider {
+public abstract class CacheContainerProvider {
 
-   public CacheContainer getCacheContainer();
+   abstract public CacheContainer getCacheContainer();
    
+   protected String getEdgAddress() {
+       final String addrProp = "edg.address";
+       final String propFile = "META-INF" + File.separator + "edg.properties";
+       Properties props = new Properties();
+       try { 
+           props.load(this.getClass().getClassLoader().getResourceAsStream(propFile));
+       } catch (IOException ioe) {
+           throw new RuntimeException(ioe);
+       }
+       return props.getProperty(addrProp);
+   }
 }

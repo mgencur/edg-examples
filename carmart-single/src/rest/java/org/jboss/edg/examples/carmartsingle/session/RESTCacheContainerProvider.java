@@ -30,7 +30,6 @@ import org.infinispan.manager.CacheContainer;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.util.Base64;
 import org.infinispan.util.concurrent.NotifyingFuture;
-
 import javax.enterprise.context.ApplicationScoped;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
@@ -49,16 +48,15 @@ import java.util.concurrent.TimeUnit;
  * @author Manik Surtani
  */
 @ApplicationScoped
-public class RESTCacheContainerProvider implements CacheContainerProvider {
+public class RESTCacheContainerProvider extends CacheContainerProvider {
    volatile CacheContainer container;
    @Override
    public CacheContainer getCacheContainer() {
       // Yes, double-checked locking.  Doesn't matter though, RESTCacheContainer is stateless and no real impact on
       // 2 copies being created.
-
       if (container == null) {
          synchronized (this) {
-            if (container == null) container = new RESTCacheContainer();
+            if (container == null) container = new RESTCacheContainer(getEdgAddress());
          }
       }
       return container;
@@ -67,17 +65,20 @@ public class RESTCacheContainerProvider implements CacheContainerProvider {
 
 class RESTCacheContainer implements CacheContainer {
 
-   // TODO: Grab these configs from a properties file or something.  Don't hard-code.
-   String host = "http://127.0.0.1:8080/datagrid/rest/";
+   String restURL;
+   
+   public RESTCacheContainer(String edgAddress) {
+       restURL = "http://" + edgAddress + ":8080/datagrid/rest/";
+   }
 
    @Override
    public <K, V> Cache<K, V> getCache() {
-      return new RESTCache<K, V>(CacheContainer.DEFAULT_CACHE_NAME, host);
+      return new RESTCache<K, V>(CacheContainer.DEFAULT_CACHE_NAME, restURL);
    }
 
    @Override
    public <K, V> Cache<K, V> getCache(String s) {
-      return new RESTCache<K, V>(s, host);
+      return new RESTCache<K, V>(s, restURL);
    }
 
    @Override
@@ -99,9 +100,9 @@ class RESTCache<K, V> implements Cache<K, V> {
    private static final String PUT = "PUT";
    private static final String DELETE = "DELETE";
 
-   RESTCache(String cacheName, String host) {
+   RESTCache(String cacheName, String restServerURL) {
       this.cacheName = cacheName;
-      this.basicUrl = host + cacheName;
+      this.basicUrl = restServerURL + cacheName;
    }
 
    private String doOperation(String method, String key, Object value) {

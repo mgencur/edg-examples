@@ -13,7 +13,7 @@ import org.infinispan.manager.DefaultCacheManager;
  *
  */
 @ApplicationScoped
-public class LocalCacheContainerProvider implements CacheContainerProvider
+public class LocalCacheContainerProvider extends CacheContainerProvider
 {
    private Logger log = Logger.getLogger(this.getClass().getName());
    

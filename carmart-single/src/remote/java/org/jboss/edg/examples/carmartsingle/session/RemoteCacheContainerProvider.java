@@ -25,8 +25,6 @@ import java.util.logging.Logger;
 
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
-import javax.enterprise.inject.Specializes;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.manager.CacheContainer;
 
@@ -40,7 +38,7 @@ import org.infinispan.manager.CacheContainer;
  * 
  */
 @ApplicationScoped
-public class RemoteCacheContainerProvider implements CacheContainerProvider {
+public class RemoteCacheContainerProvider extends CacheContainerProvider {
 
    private Logger log = Logger.getLogger(this.getClass().getName());
    
@@ -49,9 +47,9 @@ public class RemoteCacheContainerProvider implements CacheContainerProvider {
    private CacheContainer manager;
    
    public CacheContainer getCacheContainer() {
+      final int hotRodPort = 11222;
       if (!created) {
-         //use default HotRod server address: 127.0.0.1:11222
-         manager = new RemoteCacheManager();
+         manager = new RemoteCacheManager(getEdgAddress() + ":" + hotRodPort);
          created = true;
          log.info("=== Using RemoteCacheManager (Hot Rod) ===");
       }

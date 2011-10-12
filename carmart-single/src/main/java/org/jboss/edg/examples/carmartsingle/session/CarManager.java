@@ -26,6 +26,11 @@ import org.jboss.edg.examples.carmartsingle.model.Car;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,7 +58,7 @@ public class CarManager
    
    public String addNewCar() {
       carCache = provider.getCacheContainer().getCache(CACHE_NAME);
-      carCache.put(car.getNumberPlate(), car);
+      carCache.put(CarManager.encode(car.getNumberPlate()), car);
       List<String> carNumbers = getNumberPlateList();
       if (carNumbers == null) carNumbers = new LinkedList<String>();
       carNumbers.add(car.getNumberPlate());
@@ -68,7 +73,7 @@ public class CarManager
    
    public String showCarDetails(String numberPlate) {
       carCache = provider.getCacheContainer().getCache(CACHE_NAME);
-      this.car = (Car) carCache.get(numberPlate);
+      this.car = (Car) carCache.get(encode(numberPlate));
       return "showdetails";
    }
    
@@ -81,7 +86,7 @@ public class CarManager
    
    public String removeCar(String numberPlate) {
        carCache = provider.getCacheContainer().getCache(CACHE_NAME);
-       carCache.remove(numberPlate);
+       carCache.remove(encode(numberPlate));
        List<String> carNumbers = getNumberPlateList();
        carNumbers.remove(numberPlate);
        carCache.replace(CAR_NUMBERS_KEY, carNumbers);
@@ -102,5 +107,21 @@ public class CarManager
 
    public Car getCar() {
       return car;
+   }
+   
+   public static String encode(String key) {
+       try {
+           return URLEncoder.encode(key, "UTF-8");
+       } catch (UnsupportedEncodingException e) {
+           throw new RuntimeException(e); 
+       }
+   }
+   
+   public static String decode(String key) {
+       try {
+           return URLDecoder.decode(key, "UTF-8");
+       } catch (UnsupportedEncodingException e) {
+           throw new RuntimeException(e); 
+       }
    }
 }

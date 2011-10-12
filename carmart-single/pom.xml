@@ -10,14 +10,14 @@
 	<name>Car Mart Single Node (No Cluster)</name>
 
 	<properties>
-		<seam.faces.version>3.0.0.Final</seam.faces.version>
-		<infinispan.version>5.0.0.CR4</infinispan.version>
-		<hotrod.client.version>5.0.0.CR4</hotrod.client.version>
-		<jboss-as-maven-plugin-version>7.0.0.Beta4</jboss-as-maven-plugin-version>
-		
+		<hostname>test1</hostname>
+		<seam.faces.version>3.0.2.Final</seam.faces.version>
+		<infinispan.version>5.1.0.ALPHA1</infinispan.version>
+		<hotrod.client.version>5.1.0.ALPHA1</hotrod.client.version>
+		<jboss-as-maven-plugin-version>7.0.1.Final</jboss-as-maven-plugin-version>
 		<!-- Defaults -->
 		<jboss-as-management-port>9999</jboss-as-management-port>
-		<jboss-as-management-port>localhost</jboss-as-management-port>
+		<jboss-as-management-host>${hostname}</jboss-as-management-host>
 	</properties>
 
 	<dependencies>
@@ -146,12 +146,10 @@
 						</goals>
 					</execution>
 				</executions>
-<!--
 				<configuration>
 					<port>${jboss-as-management-port}</port>
-					<host>${jboss-as-management-host}</host>
+					<hostname>${jboss-as-management-host}</hostname>
 				</configuration>
--->
 			</plugin>
 		</plugins>
 	</build>
