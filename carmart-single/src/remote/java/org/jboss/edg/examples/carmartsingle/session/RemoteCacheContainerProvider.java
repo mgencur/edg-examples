@@ -47,9 +47,8 @@ public class RemoteCacheContainerProvider extends CacheContainerProvider {
    private CacheContainer manager;
    
    public CacheContainer getCacheContainer() {
-      final int hotRodPort = 11222;
       if (!created) {
-         manager = new RemoteCacheManager(getEdgAddress() + ":" + hotRodPort);
+         manager = new RemoteCacheManager(edgProperty(EDG_HOST) + ":" + edgProperty(HOTROD_PORT));
          created = true;
          log.info("=== Using RemoteCacheManager (Hot Rod) ===");
       }

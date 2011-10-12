@@ -56,7 +56,7 @@ public class RESTCacheContainerProvider extends CacheContainerProvider {
       // 2 copies being created.
       if (container == null) {
          synchronized (this) {
-            if (container == null) container = new RESTCacheContainer(getEdgAddress());
+            if (container == null) container = new RESTCacheContainer(edgProperty(EDG_HOST), edgProperty(HTTP_PORT), edgProperty(REST_CONTEXT_PATH));
          }
       }
       return container;
@@ -67,8 +67,8 @@ class RESTCacheContainer implements CacheContainer {
 
    String restURL;
    
-   public RESTCacheContainer(String edgAddress) {
-       restURL = "http://" + edgAddress + ":8080/datagrid/rest/";
+   public RESTCacheContainer(String edgHost, String httpPort, String restContextPath) {
+       restURL = "http://" + edgHost + ":" + httpPort + "/" + restContextPath + "/";
    }
 
    @Override

@@ -29,17 +29,21 @@ import org.infinispan.manager.CacheContainer;
 
 public abstract class CacheContainerProvider {
 
+   public static final String EDG_HOST = "edg.host"; 
+   public static final String HOTROD_PORT = "edg.hotrod.port"; 
+   public static final String HTTP_PORT= "edg.http.port"; 
+   public static final String REST_CONTEXT_PATH = "edg.rest.context.path"; 
+   public static final String PROPERTIES_FILE = "META-INF" + File.separator + "edg.properties";
+   
    abstract public CacheContainer getCacheContainer();
    
-   protected String getEdgAddress() {
-       final String addrProp = "edg.address";
-       final String propFile = "META-INF" + File.separator + "edg.properties";
+   protected String edgProperty(String name) {
        Properties props = new Properties();
        try { 
-           props.load(this.getClass().getClassLoader().getResourceAsStream(propFile));
+           props.load(this.getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE));
        } catch (IOException ioe) {
            throw new RuntimeException(ioe);
        }
-       return props.getProperty(addrProp);
+       return props.getProperty(name);
    }
 }
