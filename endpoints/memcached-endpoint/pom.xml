@@ -49,7 +49,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.redhat.datagrid.rest.FootballManager</mainClass>
+                            <mainClass>com.redhat.datagrid.memcached.FootballManager</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
