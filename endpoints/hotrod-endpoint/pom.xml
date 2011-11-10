@@ -14,7 +14,7 @@
     <name>HotRod endpoint example</name>
     
     <properties>
-        <hotrod.client.version>5.1.0.ALPHA1</hotrod.client.version>
+        <hotrod.client.version>5.1.0.BETA4</hotrod.client.version>
     </properties>
 
     <dependencies>
