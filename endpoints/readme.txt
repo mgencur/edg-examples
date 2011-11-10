@@ -27,7 +27,7 @@ NOTE: The cache called "teams" will be used by HotRod and REST endpoints; Memcac
    (src/main/resources/edg.properties). Modify it to point to your EDG installation (default values should be fine
    for most cases)
 
-3) Build the applications by running this command:
+3) Build the example application in its directory:
 
     mvn package assembly:single
 
