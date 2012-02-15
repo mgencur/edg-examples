@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2009, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2012, Red Hat Middleware LLC, and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -30,31 +30,31 @@ import com.redhat.datagrid.carmart.session.CacheContainerProvider;
 
 /**
  * 
- * {@link CacheContainerProvider}'s implementation creating a HotRod client.
- * Enterprise Data Grid server needs to be running and configured properly so
- * that HotRod client can remotely connect to it - this is called client-server mode.
- *  
+ * {@link CacheContainerProvider}'s implementation creating a HotRod client. 
+ * Enterprise Data Grid server needs to be running and configured properly 
+ * so that HotRod client can remotely connect to it - this is called client-server mode.
+ * 
  * @author Martin Gencur
  * 
  */
 @ApplicationScoped
 public class RemoteCacheContainerProvider extends CacheContainerProvider {
 
-   private Logger log = Logger.getLogger(this.getClass().getName());
-   
-   private BasicCacheContainer manager;
-   
-   public BasicCacheContainer getCacheContainer() {
-      if (manager == null) {
-         manager = new RemoteCacheManager(edgProperty(EDG_HOST) + ":" + edgProperty(HOTROD_PORT), true);
-         log.info("=== Using RemoteCacheManager (Hot Rod) ===");
-      }
-      return manager;
-   }
-   
-   @PreDestroy
-   public void cleanUp() {
-      manager.stop();
-      manager = null;
-   }
+    private Logger log = Logger.getLogger(this.getClass().getName());
+
+    private BasicCacheContainer manager;
+
+    public BasicCacheContainer getCacheContainer() {
+        if (manager == null) {
+            manager = new RemoteCacheManager(edgProperty(EDG_HOST) + ":" + edgProperty(HOTROD_PORT), true);
+            log.info("=== Using RemoteCacheManager (Hot Rod) ===");
+        }
+        return manager;
+    }
+
+    @PreDestroy
+    public void cleanUp() {
+        manager.stop();
+        manager = null;
+    }
 }

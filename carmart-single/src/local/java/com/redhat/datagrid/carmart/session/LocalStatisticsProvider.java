@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2009, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2012, Red Hat Middleware LLC, and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -32,38 +32,39 @@ import com.redhat.datagrid.carmart.session.StatisticsProvider;
 @Named("stats")
 @RequestScoped
 public class LocalStatisticsProvider implements StatisticsProvider {
-   
-   @Inject
-   private LocalCacheContainerProvider provider;
-   
-   private Stats stats;
-   
-   @PostConstruct
-   public void getStatsObject() {
-      stats = ((DefaultCacheManager) provider.getCacheContainer()).getCache(CarManager.CACHE_NAME).getAdvancedCache().getStats();
-   }
-   
-   public String getRetrievals() {
-      return String.valueOf(stats.getRetrievals());
-   }
 
-   public String getStores() {
-      return String.valueOf(stats.getStores());
-   }
+    @Inject
+    private LocalCacheContainerProvider provider;
 
-   public String getTotalEntries() {
-      return String.valueOf(stats.getTotalNumberOfEntries());
-   }
+    private Stats stats;
 
-   public String getHits() {
-      return String.valueOf(stats.getHits());
-   }
-   
-   public String getMisses() {
-      return String.valueOf(stats.getMisses());
-   }
-   
-   public String getRemoveHits() {
-      return String.valueOf(stats.getRemoveMisses());
-   }
+    @PostConstruct
+    public void getStatsObject() {
+        stats = ((DefaultCacheManager) provider.getCacheContainer()).getCache(CarManager.CACHE_NAME).getAdvancedCache()
+                .getStats();
+    }
+
+    public String getRetrievals() {
+        return String.valueOf(stats.getRetrievals());
+    }
+
+    public String getStores() {
+        return String.valueOf(stats.getStores());
+    }
+
+    public String getTotalEntries() {
+        return String.valueOf(stats.getTotalNumberOfEntries());
+    }
+
+    public String getHits() {
+        return String.valueOf(stats.getHits());
+    }
+
+    public String getMisses() {
+        return String.valueOf(stats.getMisses());
+    }
+
+    public String getRemoveHits() {
+        return String.valueOf(stats.getRemoveMisses());
+    }
 }

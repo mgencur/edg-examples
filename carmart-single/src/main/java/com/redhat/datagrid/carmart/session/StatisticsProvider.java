@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2009, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2012, Red Hat Middleware LLC, and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -25,23 +25,23 @@ package com.redhat.datagrid.carmart.session;
  * 
  * Provides cache statistics.
  * 
- * @author mgencur
+ * @author Martin Gencur
  * 
  */
 public interface StatisticsProvider {
-   
-   public void getStatsObject();
-   
-   public String getRetrievals();
-   
-   public String getStores();
-   
-   public String getTotalEntries();
-   
-   public String getHits();
-   
-   public String getMisses();
-   
-   public String getRemoveHits();
-   
+
+    public void getStatsObject();
+
+    public String getRetrievals();
+
+    public String getStores();
+
+    public String getTotalEntries();
+
+    public String getHits();
+
+    public String getMisses();
+
+    public String getRemoveHits();
+
 }
