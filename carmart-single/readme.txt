@@ -1,4 +1,7 @@
 To run the example on JBoss AS 7 using remote EDG server:
+=========================================================
+
+0) obtain EDG distribution with productized Infinispan libraries
 
 1) add the following configuration to your $EDG_HOME/standalone/configuration/standalone.xml to configure
    remote datagrid (the application supposes that the datagrid is running on localhost)   
@@ -17,32 +20,47 @@ To run the example on JBoss AS 7 using remote EDG server:
     
     ...into infinispan sybsystem
    
-2) start the EDG server
+2) start the EDG server (this server is supposed to run on test1 address)
     
     $EDG_HOME/bin/standalone.sh
 
-3) start JBoss AS 7 into which you want to deploy your application (this server is supposed to run on test1 address)
+3) start JBoss AS 7 into which you want to deploy your application
 
     $JBOSS_HOME/bin/standalone.sh
 
 4) edit src/main/resources/META-INF/edg.properties file and specify address of the EDG server
 
-    edg.address=localhost
+    edg.address=test1
 
 5) in the example's directory:
 
-* For remote access (client-server), run:
+* For remote access using HotRod client, run:
 
-    mvn clean install     (this will deploy the resulting war into AS - via management interface running on test1:9990)
-    
-* For in-VM mode (which is not implemented and supported currently), run:
-
-    mvn clean install -Plocal
+    mvn clean install -Photrod (this will deploy the resulting war into AS - via management interface running on localhost:9999)
 
 * For remote access via REST interface, run:
 
     mvn clean install -Prest
-
-6) go to http://test1:8080/carmart-single
+    
+6) go to http://localhost:8080/carmart-single
 
 NOTE: The application must be deployed into JBoss AS7, not EDG, since EDG does not support deploying applications. 
+
+To run the example on JBoss AS 7 in library mode (Infinispan libraries bundled with the application):
+============================================================================================
+
+0) obtain EDG distribution with productized Infinispan libraries
+
+1) install libraries from the bundle into your local maven repository
+
+    mvn initialize -Pinit-repo -Dedg.dist=/path/to/edg/distribution
+    
+2) start JBoss AS 7 where your application will be running
+
+    $JBOSS_HOME/bin/standalone.sh
+
+3) build and deploy the application (deployed via a maven plugin connected to the management interface of AS)
+
+    mvn clean install -Plocal
+
+4) go to http://localhost:8080/carmart-single

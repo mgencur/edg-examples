@@ -4,15 +4,4 @@
    xsi:schemaLocation="
       http://java.sun.com/xml/ns/javaee 
       http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
-      
-      <!-- comment the alternative out when an in-VM mode is ready -->
-<!--
-      <alternatives>
--->
-<!--           <class>org.jboss.edg.examples.carmartsingle.session.RemoteCacheContainerProvider</class> -->
-<!--           <class>org.jboss.edg.examples.carmartsingle.session.RemoteStatisticsProvider</class> -->
-<!--
-      </alternatives>
--->
-      
 </beans>
