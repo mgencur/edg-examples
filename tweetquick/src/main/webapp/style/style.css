@@ -1,0 +1,229 @@
+body {
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0px;
+	border-width: 0px;
+	background-color: #eeeeee;
+	font-family:trebuchet MS, Lucida Sans Unicode, Lucida Sans, Sans-Serif;
+}
+
+textarea {
+	height: 50px;
+	max-width: 412px;
+	max-height: 85px;
+}
+
+div#login {
+    margin-left: auto;
+    margin-right: auto;
+    height: 120px;
+    margin-top: 100px;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 5px;
+    width: 550px;
+    border: 1px solid black;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    background-color: #c3baf8;   
+}
+
+div#login .userpass {
+	width: 200px;
+	height: 20px;
+}
+
+div#login .signinbutton {
+	width: 80px;
+	height: 24px;
+}
+
+div#login label {
+	font-size: 14px;
+	color: gray;
+}
+
+div#login .heading {
+	color: #717283;
+  	font-weight:bold;
+  	font-size:16px;
+  	margin-left: 5px;
+}
+
+div#login .help {
+	margin-top: 10px;
+	color: gray;
+  	font-size:10px;
+  	margin-left: 5px;
+}
+
+div.header1 {
+    margin-left: auto;
+    margin-right: auto;
+    height: 145px;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    width: 600px;
+    border: 1px solid black;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 7px 7px 3px #888;
+    -webkit-box-shadow: 7px 7px 3px #888;
+    box-shadow: 7px 7px 3px #888;
+    background-color: #gray;   
+}
+
+div#headerleft {
+	float: left;
+	text-align: center;
+	width: 130px;
+	margin: 0px;
+	height: 130px;
+}
+
+div#headerright {
+	float: right;
+	width: 430px;
+	margin-right: 10px;
+	height: 130px;
+}
+
+img.avatar {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+	border: 1px solid black;
+}
+
+div#main {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 12px;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    width: 600px;
+    border: 1px solid black;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 7px 7px 3px #888;
+    -webkit-box-shadow: 7px 7px 3px #888;
+    box-shadow: 7px 7px 3px #888;
+    background-color: #gray;   
+}
+
+div#content {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  padding: 4px;
+  /* margin-right: 260px; */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+div.divider {
+  float: left;
+  margin-top: 18px;
+  width: 2px;
+  height: 30px;
+  margin-left: 4px;
+  margin-right: 4px;  
+  background: url(../image/divider.png) top left no-repeat;
+}
+
+div.menuitem {
+  float: left;
+  margin-left: 4px;
+  margin-right: 4px;
+  padding-top: 22px;  
+  height: 100%;
+}
+
+.statsTitle,.carsTitle {
+  color: #717283;
+  font-weight:bold;
+  font-size:16px;
+  padding-bottom: 15px;
+}
+
+.numberPlate {
+	 paddding-left: 50px;
+}
+
+td.link a {
+	font-size:14px;
+}
+
+.innerContent {
+  margin-top:15px;
+}
+
+div.menuitem a, div.menuitem a:visited {
+  margin-left: 8px;
+  margin-right: 8px;  
+  color: #000000;
+  text-decoration: none;
+}
+
+div.menuitem a:hover {
+  margin-left: 8px;
+  margin-right: 8px;  
+  color: #465fbd;
+}
+
+div#topseparator {
+	height: 10px;
+	width:600px;
+	background-color:#33343d;
+	border-top: 1px solid #dfdfdf;
+}
+
+/* Main content styles */
+
+div#statistics {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  margin-top:5px;
+  padding: 4px;
+}
+
+div.apptitle {
+  float: left;
+  margin-left: 4px;
+  margin-right: 30px;
+  padding-top: 19px;  
+  height: 100%;
+  font-size: 20px;
+  color: #465fbd;
+  font-stretch: wider;
+}
