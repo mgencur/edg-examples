@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+    
+	<rich:popupPanel id="popupfollowing" modal="true" height="400" autosized="false" onmaskclick="#{rich:component('popup')}.hide()">
+	        <f:facet name="header">
+	            <h:outputText value="#{userBean.watchedUser.username eq auth.username ? 'People you are following' : 'People user is following'}" />
+	        </f:facet>
+	        <f:facet name="controls">
+	            <h:outputLink value="#" onclick="#{rich:component('popupfollowing')}.hide(); return false;">
+	                Close window
+	            </h:outputLink>
+	        </f:facet>
+	        <h:panelGrid columns="1" >
+	            <a4j:outputPanel layout="block">
+	                <a4j:repeat value="#{userBean.following}" var="user" id="repeatfollowing">
+	                    <rich:panel styleClass="followlisting">
+	                        <h:panelGrid columns="2">
+	                        	<h:commandLink action="#{userBean.showUser(user)}" value="#{user.name}"/>
+	                            <!--  <h:link outcome="userdetails.jsf?user=#{user.username}" value="#{user.name}"/> -->
+	                            <h:outputText value="#{user.username}" />
+	                        </h:panelGrid>
+	                    </rich:panel>
+	                </a4j:repeat>
+	            </a4j:outputPanel>
+	        </h:panelGrid>
+    </rich:popupPanel>
+    
+    <rich:popupPanel id="popupfollowers" modal="true" height="400" autosized="false" onmaskclick="#{rich:component('popup')}.hide()">
+	        <f:facet name="header">
+	            <h:outputText value="#{userBean.watchedUser.username eq auth.username ? 'You are followed by' : 'User is followed by'}" />
+	        </f:facet>
+	        <f:facet name="controls">
+	            <h:outputLink value="#" onclick="#{rich:component('popupfollowers')}.hide(); return false;">
+	                Close window
+	            </h:outputLink>
+	        </f:facet>
+	        <h:panelGrid columns="1" >
+	            <a4j:outputPanel layout="block">
+	                <a4j:repeat value="#{userBean.followers}" var="user" id="repeatfollowers">
+	                    <rich:panel styleClass="followlisting">
+	                        <h:panelGrid columns="2">
+	                        	<h:commandLink action="#{userBean.showUser(user)}" value="#{user.name}"/>
+	                            <!--  <h:link outcome="userdetails.jsf?user=#{user.username}" value="#{user.name}"/> -->
+	                            <h:outputText value="#{user.username}" />
+	                        </h:panelGrid>
+	                    </rich:panel>
+	                </a4j:repeat>
+	            </a4j:outputPanel>
+	        </h:panelGrid>
+    </rich:popupPanel>
+    
+    
+</html>

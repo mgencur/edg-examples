@@ -9,8 +9,9 @@ body {
 
 textarea {
 	height: 50px;
+	width: 412px;
 	max-width: 412px;
-	max-height: 85px;
+	max-height: 50px;
 }
 
 div#login {
@@ -65,8 +66,8 @@ div#login .help {
 div.header1 {
     margin-left: auto;
     margin-right: auto;
-    height: 145px;
-    padding-left: 10px;
+    height: 160px;
+    padding-left: 3px;
     padding-top: 10px;
     padding-bottom: 5px;
     width: 600px;
@@ -79,6 +80,39 @@ div.header1 {
     -webkit-box-shadow: 7px 7px 3px #888;
     box-shadow: 7px 7px 3px #888;
     background-color: #gray;   
+}
+
+div.header2 {
+	margin-left: auto;
+    margin-right: auto;
+    height: 110px;
+    padding-left: 3px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    width: 600px;
+    border: 1px solid black;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 7px 7px 3px #888;
+    -webkit-box-shadow: 7px 7px 3px #888;
+    box-shadow: 7px 7px 3px #888;
+    background-color: #gray;   
+}
+
+.panellisting {
+    float:left; 
+    width:585px; 
+    padding:3px;
+    margin-bottom: 3px;
+}
+
+.followlisting {
+    float:left; 
+    width:200px; 
+    padding:3px;
+    margin-bottom: 3px;
 }
 
 div#headerleft {
@@ -89,17 +123,84 @@ div#headerleft {
 	height: 130px;
 }
 
+div#headerleft2 {
+	float: left;
+	text-align: center;
+	width: 130px;
+	margin: 0px;
+	height: 130px;
+}
+
+div#headerleft .username {
+	font-size: 14px;
+}
+
+div#headerleft2 .username {
+	font-size: 14px;
+}
+
 div#headerright {
+	float: right;
+	width: 430px;
+	margin-right: 10px;
+	height: 150px;
+}
+
+div#headerright2 {
 	float: right;
 	width: 430px;
 	margin-right: 10px;
 	height: 130px;
 }
 
+.divider {
+	height: 17px;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+div#headerright a, div#headerright a:visited {
+  font-size: 12px;	
+  color: #000000;
+  text-decoration: none;
+}
+
+div#headerright a:hover {
+  font-size: 12px;
+  color: #465fbd;
+}
+
+div#headerright2 a, div#headerright2 a:visited {
+  font-size: 12px;	
+  color: #000000;
+  text-decoration: none;
+}
+
+div#headerright2 a:hover {
+  font-size: 12px;
+  color: #465fbd;
+}
+
+.linkspanel {
+	float: right;
+	margin-right: 10px;
+}
+
+.linkspanel2 {
+	float: left;
+	margin-right: 10px;
+	margin-top: 20px;
+	width: 430px;
+}
+
+.homebutton {
+	float: right;
+}
+
 img.avatar {
 	margin-left: auto;
 	margin-right: auto;
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 	border: 1px solid black;
 }
 
@@ -107,8 +208,8 @@ div#main {
     margin-left: auto;
     margin-right: auto;
     margin-top: 12px;
-    padding-left: 10px;
-    padding-top: 10px;
+    padding-left: 3px;
+    padding-top: 5px;
     padding-bottom: 5px;
     width: 600px;
     border: 1px solid black;
@@ -122,108 +223,39 @@ div#main {
     background-color: #gray;   
 }
 
-div#content {
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  padding: 4px;
-  /* margin-right: 260px; */
+.paginator {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-div.divider {
-  float: left;
-  margin-top: 18px;
-  width: 2px;
-  height: 30px;
-  margin-left: 4px;
-  margin-right: 4px;  
-  background: url(../image/divider.png) top left no-repeat;
+.followlisting {
+	width: 250px;
+	
 }
 
-div.menuitem {
-  float: left;
-  margin-left: 4px;
-  margin-right: 4px;
-  padding-top: 22px;  
-  height: 100%;
+/* #RichFaces redefined skins */
+
+div.rf-p-hdr {
+	background-color:gray;
+	color:blue;
+	-moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
+    padding-top:0px;
+    padding-bottom: 0px;
 }
 
-.statsTitle,.carsTitle {
-  color: #717283;
-  font-weight:bold;
-  font-size:16px;
-  padding-bottom: 15px;
+div.rf-p {
+	-moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
 }
 
-.numberPlate {
-	 paddding-left: 50px;
-}
-
-td.link a {
-	font-size:14px;
-}
-
-.innerContent {
-  margin-top:15px;
-}
-
-div.menuitem a, div.menuitem a:visited {
-  margin-left: 8px;
-  margin-right: 8px;  
-  color: #000000;
-  text-decoration: none;
-}
-
-div.menuitem a:hover {
-  margin-left: 8px;
-  margin-right: 8px;  
-  color: #465fbd;
-}
-
-div#topseparator {
-	height: 10px;
-	width:600px;
-	background-color:#33343d;
-	border-top: 1px solid #dfdfdf;
-}
-
-/* Main content styles */
-
-div#statistics {
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  margin-top:5px;
-  padding: 4px;
-}
-
-div.apptitle {
-  float: left;
-  margin-left: 4px;
-  margin-right: 30px;
-  padding-top: 19px;  
-  height: 100%;
-  font-size: 20px;
-  color: #465fbd;
-  font-stretch: wider;
+span.rf-ds {
+	color: blue;
+	margin-left: auto;
+	margin-right: auto;
 }

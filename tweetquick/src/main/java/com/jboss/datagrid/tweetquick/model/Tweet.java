@@ -5,18 +5,20 @@ import java.util.Calendar;
 
 public class Tweet implements Serializable {
 	
-	private static final long serialVersionUID = 29993133022854381L;
+	private static final long serialVersionUID = -3268797376991935010L;
 	
 	private TweetKey key;
 	private String message;
-	private String owner;
-	private long timeOfPost;
 
 	public Tweet(String username, String message) {
 		this.message = message;
-		this.owner = username;
-		this.timeOfPost = Calendar.getInstance().getTimeInMillis();
-		this.key = new TweetKey(username, timeOfPost);
+		this.key = new TweetKey(username, Calendar.getInstance().getTimeInMillis());
+	}
+	
+	//for application initilization purposes
+	public Tweet(String username, String message, long timestamp) {
+		this.message = message;
+		this.key = new TweetKey(username, timestamp);
 	}
 	
 	public TweetKey getKey() {
@@ -32,19 +34,10 @@ public class Tweet implements Serializable {
 	}
 	
 	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
+		return this.key.getOwner();
 	}
 
 	public long getTimeOfPost() {
-		return timeOfPost;
+		return this.key.getTimeOfPost();
 	}
-
-	public void setTimeOfPost(long timeOfPost) {
-		this.timeOfPost = timeOfPost;
-	}
-
 }

@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -16,7 +17,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.transaction.UserTransaction;
 import org.infinispan.api.BasicCache;
-
 import com.jboss.datagrid.tweetquick.model.Tweet;
 import com.jboss.datagrid.tweetquick.model.TweetKey;
 import com.jboss.datagrid.tweetquick.model.User;
@@ -33,6 +33,9 @@ import javax.enterprise.inject.spi.BeanManager;
 public class InitializeCache implements SystemEventListener {
 
 	private static final int USER_COUNT = 100;
+	
+	private static final int SEVEN_DAYS_IN_MILLISECONDS = 7 * 24 * 3600 * 1000;
+	Random randomNumber = new Random();
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 
@@ -62,7 +65,8 @@ public class InitializeCache implements SystemEventListener {
             	
             	//GENERATE 5 TWEETS FOR EACH USER
             	for (int j = 1; j != 5; j++) {
-            		Tweet t = new Tweet(u.getUsername(), "Tweet number " + j + " for user " + u.getName() + " at " + Calendar.getInstance().getTime().toString());
+            		long randomTime = getRandomTime();
+            		Tweet t = new Tweet(u.getUsername(), "Tweet number " + j + " for user " + u.getName() + " at " + new Date(randomTime), randomTime );
             		//store the tweet in a cache
             		tweets.put(t.getKey(), t);
             		u.getTweets().add(t.getKey());
@@ -71,7 +75,7 @@ public class InitializeCache implements SystemEventListener {
             	users.put(u.getUsername(), u);
             }
             
-            //GENERATE 10 RANDOM FOLLOWERS AND FOLLOWING FOR EACH USER
+            //GENERATE 10 RANDOM FOLLOWERS AND FOLLOWINGS FOR EACH USER
             for (int i = 1; i != USER_COUNT; i++) {
             	User u = (User) users.get("user" + i);
             	for (User follower : generateRandomUsers(u, 10, USER_COUNT)) {
@@ -96,6 +100,11 @@ public class InitializeCache implements SystemEventListener {
             }
         }
     }
+
+	private long getRandomTime() {
+		//get random time at most 7 days old
+		return Calendar.getInstance().getTimeInMillis() - randomNumber.nextInt(SEVEN_DAYS_IN_MILLISECONDS);
+	}
 
 	private Set<User> generateRandomUsers(User forWhom, int count, int outOf) {
 		BasicCache<String, Object> users = provider.getCacheContainer().getCache("userCache");

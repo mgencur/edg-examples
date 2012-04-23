@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+    
+<ui:composition template="template.xhtml">
+
+	<ui:define name="headerarea">
+        <div class="header2">
+       		<div id="headerleft2">
+       			<h:graphicImage value="/image/avatar.png" alt="Avatar" styleClass="avatar"/><br/>
+       		</div>
+       		<div id="headerright2">
+       			<h:panelGrid columns="1">
+       				<h:outputText value="#{userBean.watchedUser.name}" styleClass="username"/>
+       			    <h:outputText value="#{userBean.watchedUser.whoami}" styleClass="username"/>
+	        	</h:panelGrid>
+	        	<h:panelGrid columns="2" styleClass="linkspanel2">
+	        		<h:panelGrid columns="3">
+		        		<h:commandLink value="Following">
+        					<rich:componentControl target="popupfollowing" operation="show" />
+    					</h:commandLink>
+		        		<h:graphicImage value="/image/divider.png" styleClass="divider"/>
+		        		<h:commandLink value="Followers">
+        					<rich:componentControl target="popupfollowers" operation="show" />
+    					</h:commandLink>
+   					</h:panelGrid>
+   					<h:panelGrid columns="1" styleClass="homebutton">
+	        			<h:commandLink action="#{userBean.goHome}" value="Home" />
+	        		</h:panelGrid>
+	        	</h:panelGrid>
+	        	
+	        	<ui:decorate template="popupwindows.xhtml"/>
+	        </div>
+        </div>
+	</ui:define>
+	
+	<ui:define name="mainarea">
+       	<h:outputText value="#{userBean.watchedUser.name}'s tweets"/>
+        <h:panelGrid columns="1" >
+            <a4j:outputPanel layout="block" id="tweetpanel">
+                <a4j:repeat value="#{tweetBean.watchedUserTweets}" var="tweet" rows="10" id="repeat">
+                    <rich:panel styleClass="panellisting">
+                        <f:facet name="header">
+                        	<h:panelGrid columns="3">
+                            	<h:outputText value="#{tweet.name}"/>
+                            	<h:outputText value="#{tweet.username}"/>
+                            	<h:outputText value="#{tweet.friendlyTimeOfPost}"/>
+                        	</h:panelGrid>
+                        </f:facet>
+                        <h:panelGrid columns="1">
+                            <h:outputText value="#{tweet.message}" />
+                        </h:panelGrid>
+                    </rich:panel>
+                </a4j:repeat>
+            </a4j:outputPanel>
+            <a4j:outputPanel layout="block" styleClass="paginator">
+                <rich:dataScroller for="repeat" render="tweetpanel" />
+            </a4j:outputPanel>
+        </h:panelGrid>
+	</ui:define>
+	
+</ui:composition>
+
+</html>
