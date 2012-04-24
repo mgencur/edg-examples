@@ -45,29 +45,26 @@ import com.jboss.datagrid.tweetquick.session.CacheContainerProvider;
 @ApplicationScoped
 public class JBossASCacheContainerProvider implements CacheContainerProvider {
 
-    private BasicCacheContainer manager;
+   private BasicCacheContainer manager;
 
-    public BasicCacheContainer getCacheContainer() {
-        if (manager == null) {
-            GlobalConfiguration glob = new GlobalConfigurationBuilder()
-                .nonClusteredDefault().globalJmxStatistics().enable()
-                .jmxDomain("tweetquick")
-                .build();
-            Configuration loc = new ConfigurationBuilder()
-                .jmxStatistics().enable()
-                .clustering().cacheMode(CacheMode.LOCAL)
-                .transaction().transactionMode(TransactionMode.TRANSACTIONAL).autoCommit(false)
-                .lockingMode(LockingMode.OPTIMISTIC).transactionManagerLookup(new GenericTransactionManagerLookup())
-                .locking().isolationLevel(IsolationLevel.REPEATABLE_READ)
-                .build();
-            manager = new DefaultCacheManager(glob, loc, true);
-        }
-        return manager;
-    }
+   public BasicCacheContainer getCacheContainer() {
+      if (manager == null) {
+         GlobalConfiguration glob = new GlobalConfigurationBuilder().nonClusteredDefault()
+                  .globalJmxStatistics().enable().jmxDomain("tweetquick").build();
+         Configuration loc = new ConfigurationBuilder().jmxStatistics().enable().clustering()
+                  .cacheMode(CacheMode.LOCAL).transaction()
+                  .transactionMode(TransactionMode.TRANSACTIONAL).autoCommit(false)
+                  .lockingMode(LockingMode.OPTIMISTIC)
+                  .transactionManagerLookup(new GenericTransactionManagerLookup()).locking()
+                  .isolationLevel(IsolationLevel.REPEATABLE_READ).build();
+         manager = new DefaultCacheManager(glob, loc, true);
+      }
+      return manager;
+   }
 
-    @PreDestroy
-    public void cleanUp() {
-        manager.stop();
-        manager = null;
-    }
+   @PreDestroy
+   public void cleanUp() {
+      manager.stop();
+      manager = null;
+   }
 }

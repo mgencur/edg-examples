@@ -18,69 +18,68 @@ import com.jboss.datagrid.tweetquick.model.User;
 @SessionScoped
 public class Authenticator implements Serializable {
 
-	private static final long serialVersionUID = 8144862964879581999L;
+   private static final long serialVersionUID = 8144862964879581999L;
 
-	private User user;
+   private User user;
 
-	private String username = "user1";
-	private String password = "pass1";
+   private String username = "user1";
+   private String password = "pass1";
 
-	@Inject
-	private CacheContainerProvider provider;
-	
-	public boolean isLoggedIn() {
-		return user != null;
-	}
+   @Inject
+   private CacheContainerProvider provider;
 
-	public void login() {
-		BasicCache<String, Object> userCache = provider.getCacheContainer()
-				.getCache("userCache");
-		User currentUser = (User) userCache.get(username);
-		if (currentUser == null) {
-			FacesContext.getCurrentInstance().addMessage("msg1", new FacesMessage("Username does not exist!"));
-			return;
-		}
-		String storedEncryptedPassword = currentUser.getPassword();
-		String currentEncryptedPassword = InitializeCache.hashPassword(password);
-		if (storedEncryptedPassword.equals(currentEncryptedPassword)) {
-			user = currentUser;
-		} else {
-			FacesContext.getCurrentInstance().addMessage("msg2", new FacesMessage("Wrong password!"));
-		}
-	}
+   public boolean isLoggedIn() {
+      return user != null;
+   }
 
-	public void logout() {
-		user = null;
-	}
+   public void login() {
+      BasicCache<String, Object> userCache = provider.getCacheContainer().getCache("userCache");
+      User currentUser = (User) userCache.get(username);
+      if (currentUser == null) {
+         FacesContext.getCurrentInstance().addMessage("msg1",
+                  new FacesMessage("Username does not exist!"));
+         return;
+      }
+      String storedEncryptedPassword = currentUser.getPassword();
+      String currentEncryptedPassword = InitializeCache.hashPassword(password);
+      if (storedEncryptedPassword.equals(currentEncryptedPassword)) {
+         user = currentUser;
+      } else {
+         FacesContext.getCurrentInstance().addMessage("msg2", new FacesMessage("Wrong password!"));
+      }
+   }
 
-	public void authenticate() {
-		if (!isLoggedIn()) {
-			try {
-				FacesContext.getCurrentInstance().getExternalContext()
-						.redirect("login.jsf");
-			} catch (IOException e) {
-				throw new RuntimeException("Redirection failed.");
-			}
-		}
-	}
-	
-	public String getUsername() {
-		return username;
-	}
+   public void logout() {
+      user = null;
+   }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+   public void authenticate() {
+      if (!isLoggedIn()) {
+         try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("login.jsf");
+         } catch (IOException e) {
+            throw new RuntimeException("Redirection failed.");
+         }
+      }
+   }
 
-	public String getPassword() {
-		return password;
-	}
+   public String getUsername() {
+      return username;
+   }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public User getUser() {
-		return user;
-	}
+   public void setUsername(String username) {
+      this.username = username;
+   }
+
+   public String getPassword() {
+      return password;
+   }
+
+   public void setPassword(String password) {
+      this.password = password;
+   }
+
+   public User getUser() {
+      return user;
+   }
 }

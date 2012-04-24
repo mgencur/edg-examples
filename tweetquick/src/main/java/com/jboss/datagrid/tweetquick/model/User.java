@@ -33,92 +33,91 @@ import java.util.List;
  */
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 188164481825309731L;
+   private static final long serialVersionUID = 188164481825309731L;
 
-    private String username; // unique identifier
-    
-    private String name;
-    private String password;
-    private String whoami; //description of the person
-    private List<TweetKey> tweets;
-    private List<String> watchers;
-    private List<String> watching;
+   private String username; // unique identifier
 
-    public User(String username, String name, String surname, String password,
-			String whoami) {
-		this.username = username;
-		this.name = name;
-		this.password = password;
-		this.whoami = whoami;
-		this.tweets = new LinkedList<TweetKey>();
-		this.watchers = new LinkedList<String>();
-		this.watching = new LinkedList<String>();
-	}
+   private String name;
+   private String password;
+   private String whoami; // description of the person
+   private List<TweetKey> tweets;
+   private List<String> watchers;
+   private List<String> watching;
 
-    public void addFollower(String user) {
-    	this.watchers.add(user);
-    }
-    
-    public void removeFollower(String user) {
-    	this.watchers.remove(user);
-    }
-    
-    public void addFollowing(String user) {
-    	this.watching.add(user);
-    }
-    
-    public void removeFollowing(String user) {
-    	this.watching.remove(user);
-    }
-    
-    public void addTweet(TweetKey tweet) {
-    	this.tweets.add(tweet);
-    }
-    
-    //*************************************************************************************
-    
-    public String getUsername() {
-		return username;
-	}
+   public User(String username, String name, String surname, String password, String whoami) {
+      this.username = username;
+      this.name = name;
+      this.password = password;
+      this.whoami = whoami;
+      this.tweets = new LinkedList<TweetKey>();
+      this.watchers = new LinkedList<String>();
+      this.watching = new LinkedList<String>();
+   }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+   public void addFollower(String user) {
+      this.watchers.add(user);
+   }
 
-	public String getName() {
-		return name;
-	}
+   public void removeFollower(String user) {
+      this.watchers.remove(user);
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public void addFollowing(String user) {
+      this.watching.add(user);
+   }
 
-	public String getPassword() {
-		return password;
-	}
+   public void removeFollowing(String user) {
+      this.watching.remove(user);
+   }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+   public void addTweet(TweetKey tweet) {
+      this.tweets.add(tweet);
+   }
 
-	public String getWhoami() {
-		return whoami;
-	}
+   // *************************************************************************************
 
-	public void setWhoami(String whoami) {
-		this.whoami = whoami;
-	}
+   public String getUsername() {
+      return username;
+   }
 
-	public List<TweetKey> getTweets() {
-		return tweets;
-	}
+   public void setUsername(String username) {
+      this.username = username;
+   }
 
-	public List<String> getWatchers() {
-		return watchers;
-	}
+   public String getName() {
+      return name;
+   }
 
-	public List<String> getWatching() {
-		return watching;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getPassword() {
+      return password;
+   }
+
+   public void setPassword(String password) {
+      this.password = password;
+   }
+
+   public String getWhoami() {
+      return whoami;
+   }
+
+   public void setWhoami(String whoami) {
+      this.whoami = whoami;
+   }
+
+   public List<TweetKey> getTweets() {
+      return tweets;
+   }
+
+   public List<String> getWatchers() {
+      return watchers;
+   }
+
+   public List<String> getWatching() {
+      return watching;
+   }
 
 }
