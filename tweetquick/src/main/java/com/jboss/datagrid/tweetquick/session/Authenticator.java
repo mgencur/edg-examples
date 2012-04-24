@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,15 +37,15 @@ public class Authenticator implements Serializable {
 				.getCache("userCache");
 		User currentUser = (User) userCache.get(username);
 		if (currentUser == null) {
-			
+			FacesContext.getCurrentInstance().addMessage("msg1", new FacesMessage("Username does not exist!"));
+			return;
 		}
 		String storedEncryptedPassword = currentUser.getPassword();
-		String currentEncryptedPassword = InitializeCache
-				.hashPassword(password);
+		String currentEncryptedPassword = InitializeCache.hashPassword(password);
 		if (storedEncryptedPassword.equals(currentEncryptedPassword)) {
 			user = currentUser;
 		} else {
-			
+			FacesContext.getCurrentInstance().addMessage("msg2", new FacesMessage("Wrong password!"));
 		}
 	}
 
@@ -61,9 +62,8 @@ public class Authenticator implements Serializable {
 				throw new RuntimeException("Redirection failed.");
 			}
 		}
-
 	}
-
+	
 	public String getUsername() {
 		return username;
 	}

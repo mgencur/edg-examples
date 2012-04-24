@@ -154,7 +154,7 @@ div#headerright2 {
 }
 
 .divider {
-	height: 17px;
+	height: 19px;
 	margin-left: 3px;
 	margin-right: 3px;
 }
@@ -195,6 +195,21 @@ div#headerright2 a:hover {
 
 .homebutton {
 	float: right;
+}
+
+.timeofpost {
+	float: right;
+}
+
+.tweetheader {
+	width: 565px;
+}
+
+.loginwarning {
+	color: red;
+	font-size: 12px;
+	margin-left: 2px;
+	margin-top: 4px;
 }
 
 img.avatar {

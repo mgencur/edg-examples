@@ -20,16 +20,21 @@
 		        		<h:inputTextarea value="#{tweetBean.message}" id="message"/>
 		        		<h:commandButton action="#{tweetBean.sendTweet}" value="Tweet" class="signinbutton" />
 		        	</h:panelGrid>
-		        	<h:panelGrid columns="5" styleClass="linkspanel">
-		        		<h:link outcome="mytweets.jsf" value="My tweets"/>
-		        		<h:graphicImage value="/image/divider.png" styleClass="divider"/>
-		        		<h:commandLink value="Following">
-        					<rich:componentControl target="popupfollowing" operation="show" />
-    					</h:commandLink>
-		        		<h:graphicImage value="/image/divider.png" styleClass="divider"/>
-		        		<h:commandLink value="Followers">
-        					<rich:componentControl target="popupfollowers" operation="show" />
-    					</h:commandLink>
+		        	<h:panelGrid columns="2" styleClass="linkspanel2">
+		        		<h:panelGrid columns="5">
+			        		<h:link outcome="mytweets.jsf" value="My tweets"/>
+			        		<h:graphicImage value="/image/divider.png" styleClass="divider"/>
+			        		<h:commandLink value="Watching">
+		       					<rich:componentControl target="popupfollowing" operation="show" />
+		   					</h:commandLink>
+			        		<h:graphicImage value="/image/divider.png" styleClass="divider"/>
+			        		<h:commandLink value="Watchers">
+		       					<rich:componentControl target="popupfollowers" operation="show" />
+		   					</h:commandLink>
+	   					</h:panelGrid>
+	   					<h:panelGrid columns="1" styleClass="homebutton">
+	    			    	<h:commandLink action="#{auth.logout()}" value="Log out"/>
+		        		</h:panelGrid>
 		        	</h:panelGrid>
 		        	<ui:decorate template="popupwindows.xhtml"/>
 		        </div>
@@ -43,10 +48,14 @@
 	                <a4j:repeat value="#{tweetBean.recentTweets}" var="tweet" rows="10" id="repeat">
 	                    <rich:panel styleClass="panellisting">
 	                        <f:facet name="header">
-	                        	<h:panelGrid columns="5">
-	                        		<h:commandLink action="#{userBean.showUser(tweet)}" value="#{tweet.name}"/>
-	                            	<h:outputText value="#{tweet.username}"/>
-	                            	<h:outputText value="#{tweet.friendlyTimeOfPost}"/>
+	                        	<h:panelGrid columns="2" styleClass="tweetheader">
+		                        	<h:panelGrid columns="2">
+		                        		<h:commandLink action="#{userBean.showUser(tweet)}" value="#{tweet.name}"/>
+		                            	<h:outputText value="#{tweet.username}"/>
+		                        	</h:panelGrid>
+		                        	<h:panelGrid columns="1" styleClass="timeofpost">
+		                        		<h:outputText value="#{tweet.friendlyTimeOfPost}"/>
+		                        	</h:panelGrid>
 	                        	</h:panelGrid>
 	                        </f:facet>
 	                        <h:panelGrid columns="1">

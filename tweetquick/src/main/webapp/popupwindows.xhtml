@@ -7,52 +7,59 @@
     xmlns:rich="http://richfaces.org/rich">
     
 	<rich:popupPanel id="popupfollowing" modal="true" height="400" autosized="false" onmaskclick="#{rich:component('popup')}.hide()">
-	        <f:facet name="header">
-	            <h:outputText value="#{userBean.watchedUser.username eq auth.username ? 'People you are following' : 'People user is following'}" />
-	        </f:facet>
-	        <f:facet name="controls">
-	            <h:outputLink value="#" onclick="#{rich:component('popupfollowing')}.hide(); return false;">
-	                Close window
-	            </h:outputLink>
-	        </f:facet>
-	        <h:panelGrid columns="1" >
-	            <a4j:outputPanel layout="block">
-	                <a4j:repeat value="#{userBean.following}" var="user" id="repeatfollowing">
-	                    <rich:panel styleClass="followlisting">
-	                        <h:panelGrid columns="2">
-	                        	<h:commandLink action="#{userBean.showUser(user)}" value="#{user.name}"/>
-	                            <!--  <h:link outcome="userdetails.jsf?user=#{user.username}" value="#{user.name}"/> -->
-	                            <h:outputText value="#{user.username}" />
-	                        </h:panelGrid>
-	                    </rich:panel>
-	                </a4j:repeat>
-	            </a4j:outputPanel>
-	        </h:panelGrid>
+        <f:facet name="header">
+            <h:outputText value="#{userBean.watchedUser.username eq auth.username ? 'People you are watching' : 'People user is watching'}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popupfollowing')}.hide(); return false;">
+                Close
+            </h:outputLink>
+        </f:facet>
+        <h:panelGrid columns="1" >
+            <a4j:outputPanel layout="block">
+                <a4j:repeat value="#{userBean.watching}" var="user" id="repeatfollowing">
+                    <rich:panel styleClass="followlisting">
+                        <h:panelGrid columns="2">
+                        	<h:panelGrid columns="2">
+                        		<h:commandLink action="#{userBean.showUser(user)}" value="#{user.name}"/>
+                            	<h:outputText value="#{user.username}" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                            	<h:commandLink action="#{userBean.watchUser(user)}" value="Watch" rendered="#{not userBean.isWatchedByMe(user)}" />
+                            </h:panelGrid>
+                        </h:panelGrid>
+                    </rich:panel>
+                </a4j:repeat>
+            </a4j:outputPanel>
+        </h:panelGrid>
     </rich:popupPanel>
     
     <rich:popupPanel id="popupfollowers" modal="true" height="400" autosized="false" onmaskclick="#{rich:component('popup')}.hide()">
-	        <f:facet name="header">
-	            <h:outputText value="#{userBean.watchedUser.username eq auth.username ? 'You are followed by' : 'User is followed by'}" />
-	        </f:facet>
-	        <f:facet name="controls">
-	            <h:outputLink value="#" onclick="#{rich:component('popupfollowers')}.hide(); return false;">
-	                Close window
-	            </h:outputLink>
-	        </f:facet>
-	        <h:panelGrid columns="1" >
-	            <a4j:outputPanel layout="block">
-	                <a4j:repeat value="#{userBean.followers}" var="user" id="repeatfollowers">
-	                    <rich:panel styleClass="followlisting">
-	                        <h:panelGrid columns="2">
-	                        	<h:commandLink action="#{userBean.showUser(user)}" value="#{user.name}"/>
-	                            <!--  <h:link outcome="userdetails.jsf?user=#{user.username}" value="#{user.name}"/> -->
-	                            <h:outputText value="#{user.username}" />
-	                        </h:panelGrid>
-	                    </rich:panel>
-	                </a4j:repeat>
-	            </a4j:outputPanel>
-	        </h:panelGrid>
+        <f:facet name="header">
+            <h:outputText value="#{userBean.watchedUser.username eq auth.username ? 'You are watched by' : 'User is watched by'}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popupfollowers')}.hide(); return false;">
+                Close
+            </h:outputLink>
+        </f:facet>
+        <h:panelGrid columns="1" >
+            <a4j:outputPanel layout="block">
+                <a4j:repeat value="#{userBean.watchers}" var="user" id="repeatfollowers">
+                    <rich:panel styleClass="followlisting">
+                        <h:panelGrid columns="2">
+                        	<h:panelGrid columns="2">
+                        		<h:commandLink action="#{userBean.showUser(user)}" value="#{user.name}"/>
+                            	<h:outputText value="#{user.username}" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                            	<h:commandLink action="#{userBean.watchUser(user)}" value="Watch" rendered="#{not userBean.isWatchedByMe(user)}" />
+                            </h:panelGrid>
+                        </h:panelGrid>
+                    </rich:panel>
+                </a4j:repeat>
+            </a4j:outputPanel>
+        </h:panelGrid>
     </rich:popupPanel>
-    
     
 </html>

@@ -5,8 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.UserTransaction;
 
 import org.infinispan.api.BasicCache;
 
@@ -19,7 +21,7 @@ public class UserBean implements Serializable {
 	private static final long serialVersionUID = -5419061180849357611L;
 
 	@Inject
-	private Authenticator auth;
+	private Instance<Authenticator> auth;
 	
 	private User watchedUser;
 		
@@ -28,30 +30,33 @@ public class UserBean implements Serializable {
 	
 	BasicCache<String, Object> userCache;
 	
-	public List<User> getFollowing() {
+	@Inject
+	private UserTransaction utx;
+	
+	public List<User> getWatching() {
 		if (watchedUser == null) {
-			watchedUser = auth.getUser();
+			watchedUser = auth.get().getUser();
 		}
-		List<User> returnFollowing = new LinkedList<User>();
-		List<String> following = watchedUser.getFollowing();
-		for (String username : following) {
+		List<User> returnWatching = new LinkedList<User>();
+		List<String> watching = watchedUser.getWatching();
+		for (String username : watching) {
 			User u = (User) getUserCache().get(username);
-			returnFollowing.add(u);
+			returnWatching.add(u);
 	    }
-		return returnFollowing;
+		return returnWatching;
 	}
 	
-	public List<User> getFollowers() {
+	public List<User> getWatchers() {
 		if (watchedUser == null) {
-			watchedUser = auth.getUser();
+			watchedUser = auth.get().getUser();
 		}
-		List<User> returnFollowers = new LinkedList<User>();
-		List<String> followers = watchedUser.getFollowers();
-		for (String username : followers) {
+		List<User> returnWatchers = new LinkedList<User>();
+		List<String> watchers = watchedUser.getWatchers();
+		for (String username : watchers) {
 			User u = (User) getUserCache().get(username);
-			returnFollowers.add(u);
+			returnWatchers.add(u);
 		}
-		return returnFollowers;
+		return returnWatchers;
 	}
 	
 	public String showUser(User user) {
@@ -77,8 +82,34 @@ public class UserBean implements Serializable {
 	}
 	
 	public String goHome() {
-		this.watchedUser = auth.getUser();
+		this.watchedUser = auth.get().getUser();
 		return "home";
 	}
 	
+	public boolean isWatchedByMe(User u) {
+		List<String> watching = auth.get().getUser().getWatching();
+//		System.out.println("User " + auth.get().getUser().getName() + " is watching: " + auth.get().getUser().getWatching());
+//		System.out.println("Koho: " + u.getUsername());
+//		System.out.println("Test na watching: " + (watching.contains(u.getUsername()) ? true : false));
+		return watching.contains(u.getUsername()) ? true : false;
+	}
+	
+	public String watchUser(User user) {
+		User me = this.auth.get().getUser();
+		List<String> watching = me.getWatching();
+		watching.add(user.getUsername());
+		try {
+			utx.begin();
+			getUserCache().replace(me.getUsername(), me);
+			utx.commit();
+		} catch (Exception e) {
+			if (utx != null) {
+				try {
+					utx.rollback();
+				} catch (Exception e1) {
+				}
+			}
+		}
+		return null;
+	}
 }

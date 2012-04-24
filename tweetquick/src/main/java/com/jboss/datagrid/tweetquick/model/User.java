@@ -41,8 +41,8 @@ public class User implements Serializable {
     private String password;
     private String whoami; //description of the person
     private List<TweetKey> tweets;
-    private List<String> followers;
-    private List<String> following;
+    private List<String> watchers;
+    private List<String> watching;
 
     public User(String username, String name, String surname, String password,
 			String whoami) {
@@ -51,24 +51,24 @@ public class User implements Serializable {
 		this.password = password;
 		this.whoami = whoami;
 		this.tweets = new LinkedList<TweetKey>();
-		this.followers = new LinkedList<String>();
-		this.following = new LinkedList<String>();
+		this.watchers = new LinkedList<String>();
+		this.watching = new LinkedList<String>();
 	}
 
     public void addFollower(String user) {
-    	this.followers.add(user);
+    	this.watchers.add(user);
     }
     
     public void removeFollower(String user) {
-    	this.followers.remove(user);
+    	this.watchers.remove(user);
     }
     
     public void addFollowing(String user) {
-    	this.following.add(user);
+    	this.watching.add(user);
     }
     
     public void removeFollowing(String user) {
-    	this.following.remove(user);
+    	this.watching.remove(user);
     }
     
     public void addTweet(TweetKey tweet) {
@@ -113,12 +113,12 @@ public class User implements Serializable {
 		return tweets;
 	}
 
-	public List<String> getFollowers() {
-		return followers;
+	public List<String> getWatchers() {
+		return watchers;
 	}
 
-	public List<String> getFollowing() {
-		return following;
+	public List<String> getWatching() {
+		return watching;
 	}
 
 }

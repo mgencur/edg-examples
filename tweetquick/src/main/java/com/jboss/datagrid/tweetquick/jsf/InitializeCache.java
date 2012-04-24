@@ -78,11 +78,11 @@ public class InitializeCache implements SystemEventListener {
             //GENERATE 10 RANDOM FOLLOWERS AND FOLLOWINGS FOR EACH USER
             for (int i = 1; i != USER_COUNT; i++) {
             	User u = (User) users.get("user" + i);
-            	for (User follower : generateRandomUsers(u, 10, USER_COUNT)) {
-            		u.getFollowers().add(follower.getUsername());
+            	for (User watcher : generateRandomUsers(u, 10, USER_COUNT)) {
+            		u.getWatchers().add(watcher.getUsername());
             	}
-            	for (User following : generateRandomUsers(u, 30, USER_COUNT)) {
-            		u.getFollowing().add(following.getUsername());
+            	for (User watching : generateRandomUsers(u, 30, USER_COUNT)) {
+            		u.getWatching().add(watching.getUsername());
             	}
             	users.replace("user" + i, u);
             }
@@ -108,7 +108,7 @@ public class InitializeCache implements SystemEventListener {
 
 	private Set<User> generateRandomUsers(User forWhom, int count, int outOf) {
 		BasicCache<String, Object> users = provider.getCacheContainer().getCache("userCache");
-		Random r = new Random();
+		Random r = new Random(getRandomTime());
 		Set<User> result = new HashSet<User>();
 		while (result.size() != count) {
 			int id = (r.nextInt(outOf - 1)) + 1;  //do not return 0
