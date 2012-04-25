@@ -18,17 +18,22 @@
         <h:panelGrid columns="1" >
             <a4j:outputPanel layout="block">
                 <a4j:repeat value="#{userBean.watching}" var="user" id="repeatfollowing">
-                    <rich:panel styleClass="followlisting">
-                        <h:panelGrid columns="2">
-                        	<h:panelGrid columns="2">
+                    <h:panelGrid columns="1" styleClass="watcharea">
+                        <h:panelGrid columns="3" styleClass="watchpanel">
+                        	<h:panelGrid columns="3">
+                        		<a4j:mediaOutput element="img" cacheable="false" session="true" id="img" createContent="#{userBean.showUserImage}"
+            						value="#{user.username}" mimeType="image/jpeg" alt="img" styleClass="avatarsmaller"/>
                         		<h:commandLink action="#{userBean.showUser(user)}" value="#{user.name}"/>
                             	<h:outputText value="#{user.username}" />
                             </h:panelGrid>
-                            <h:panelGrid columns="1">
+                            <h:panelGrid columns="1" styleClass="watch">
                             	<h:commandLink action="#{userBean.watchUser(user)}" value="Watch" rendered="#{not userBean.isWatchedByMe(user)}" />
                             </h:panelGrid>
+                            <h:panelGrid columns="1" styleClass="watch">
+                            	<h:commandLink action="#{userBean.stopWatchingUser(user)}" value="Stop watching" rendered="#{userBean.isWatchedByMe(user)}" />
+                            </h:panelGrid>
                         </h:panelGrid>
-                    </rich:panel>
+                    </h:panelGrid>
                 </a4j:repeat>
             </a4j:outputPanel>
         </h:panelGrid>
@@ -46,17 +51,19 @@
         <h:panelGrid columns="1" >
             <a4j:outputPanel layout="block">
                 <a4j:repeat value="#{userBean.watchers}" var="user" id="repeatfollowers">
-                    <rich:panel styleClass="followlisting">
-                        <h:panelGrid columns="2">
-                        	<h:panelGrid columns="2">
+                    <h:panelGrid columns="1" styleClass="watcharea">
+                        <h:panelGrid columns="2" styleClass="watchpanel">
+                        	<h:panelGrid columns="3">
+                        		<a4j:mediaOutput element="img" cacheable="false" session="true" id="img" createContent="#{userBean.showUserImage}"
+            						value="#{user.username}" mimeType="image/jpeg" alt="img" styleClass="avatarsmaller"/>
                         		<h:commandLink action="#{userBean.showUser(user)}" value="#{user.name}"/>
                             	<h:outputText value="#{user.username}" />
                             </h:panelGrid>
-                            <h:panelGrid columns="1">
+                            <h:panelGrid columns="1" styleClass="watch">
                             	<h:commandLink action="#{userBean.watchUser(user)}" value="Watch" rendered="#{not userBean.isWatchedByMe(user)}" />
                             </h:panelGrid>
                         </h:panelGrid>
-                    </rich:panel>
+                    </h:panelGrid>
                 </a4j:repeat>
             </a4j:outputPanel>
         </h:panelGrid>

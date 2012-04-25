@@ -34,7 +34,6 @@ import org.infinispan.transaction.LockingMode;
 import org.infinispan.transaction.TransactionMode;
 import org.infinispan.transaction.lookup.GenericTransactionManagerLookup;
 import org.infinispan.util.concurrent.IsolationLevel;
-
 import com.jboss.datagrid.tweetquick.session.CacheContainerProvider;
 
 /**

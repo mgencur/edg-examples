@@ -9,18 +9,19 @@
 <ui:composition template="template.xhtml">
 
 	<ui:define name="headerarea">
-        <div class="header1">
-       		<div id="headerleft">
-       			<h:graphicImage value="/image/avatar.png" alt="Avatar" styleClass="avatar"/><br/>
+        <div class="headerinput">
+       		<div id="headerinputleft">
+       			<a4j:mediaOutput element="img" cacheable="false" session="true" id="img" createContent="#{userBean.showUserImage}"
+            		value="#{auth.username}" mimeType="image/jpeg" alt="img" styleClass="avatar"/>
        			<h:outputText value="#{auth.user.name}" styleClass="username"/>
        		</div>
-       		<div id="headerright">
+       		<div id="headerinputright">
        			<h:panelGrid columns="1">
        				<h:outputText value="What comes to your mind..."/>
 	        		<h:inputTextarea value="#{tweetBean.message}" id="message"/>
 	        		<h:commandButton action="#{tweetBean.sendTweet}" value="Tweet" class="signinbutton" />
 	        	</h:panelGrid>
-	        	<h:panelGrid columns="2" styleClass="linkspanel2">
+	        	<h:panelGrid columns="2" styleClass="linkspanel">
 	        		<h:panelGrid columns="5">
 		        		<h:link outcome="recenttweets.jsf" value="Recent tweets"/>
 		        		<h:graphicImage value="/image/divider.png" styleClass="divider"/>
@@ -33,7 +34,7 @@
 	   					</h:commandLink>
    					</h:panelGrid>
    					<h:panelGrid columns="1" styleClass="homebutton">
-    			    	<h:commandLink action="#{auth.logout()}" value="Log out"/>
+    			    	<h:commandLink action="#{auth.logout}" value="Log out"/>
 	        		</h:panelGrid>
 	        	</h:panelGrid>
 	        	<ui:decorate template="popupwindows.xhtml"/>
@@ -42,16 +43,21 @@
 	</ui:define>
 	
 	<ui:define name="mainarea">
-       	<h:outputText value="My tweets"/>
+		<h:panelGrid columns="1" styleClass="tweetlistheader">
+       		<h:outputText value="My tweets"/>
+       	</h:panelGrid>
         <h:panelGrid columns="1" >
             <a4j:outputPanel layout="block" id="tweetpanel">
-                <a4j:repeat value="#{tweetBean.myTweets}" var="tweet" rows="10" id="repeat">
-                    <rich:panel styleClass="panellisting">
+                <a4j:repeat value="#{tweetBean.myTweets}" var="tweet" rows="8" id="repeat">
+                    <h:panelGrid columns="2" styleClass="tweetarea">
+                		<a4j:mediaOutput element="img" cacheable="false" session="true" id="img" createContent="#{userBean.showUserImage}"
+            								value="#{tweet.ownerUsername}" mimeType="image/jpeg" alt="img" styleClass="avatarsmall"/>
+            			<rich:panel styleClass="panellisting">
 	                        <f:facet name="header">
 	                        	<h:panelGrid columns="2" styleClass="tweetheader">
 		                        	<h:panelGrid columns="2">
-		                        		<h:outputText value="#{tweet.name}"/>
-		                            	<h:outputText value="#{tweet.username}"/>
+		                        		<h:outputText value="#{tweet.ownerName}"/>
+		                            	<h:outputText value="#{tweet.ownerUsername}"/>
 		                        	</h:panelGrid>
 		                        	<h:panelGrid columns="1" styleClass="timeofpost">
 		                        		<h:outputText value="#{tweet.friendlyTimeOfPost}"/>
@@ -62,6 +68,7 @@
 	                            <h:outputText value="#{tweet.message}" />
 	                        </h:panelGrid>
 	                    </rich:panel>
+                    </h:panelGrid>
                 </a4j:repeat>
             </a4j:outputPanel>
             <a4j:outputPanel layout="block" styleClass="paginator">

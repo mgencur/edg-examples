@@ -9,16 +9,17 @@
 <ui:composition template="template.xhtml">
 
 	<ui:define name="headerarea">
-        <div class="header2">
-       		<div id="headerleft2">
-       			<h:graphicImage value="/image/avatar.png" alt="Avatar" styleClass="avatar"/><br/>
+        <div class="headerdetails">
+       		<div id="headerdetailsleft">
+       			<a4j:mediaOutput element="img" cacheable="false" session="true" id="img" createContent="#{userBean.showUserImage}"
+            		value="#{userBean.watchedUser.username}" mimeType="image/jpeg" alt="img" styleClass="avatar"/>
        		</div>
-       		<div id="headerright2">
+       		<div id="headerdetailsright">
        			<h:panelGrid columns="1">
        				<h:outputText value="#{userBean.watchedUser.name}" styleClass="username"/>
        			    <h:outputText value="#{userBean.watchedUser.whoami}" styleClass="username"/>
 	        	</h:panelGrid>
-	        	<h:panelGrid columns="2" styleClass="linkspanel2">
+	        	<h:panelGrid columns="2" styleClass="linkspanel">
 	        		<h:panelGrid columns="3">
 		        		<h:commandLink value="Watching">
         					<rich:componentControl target="popupfollowing" operation="show" />
@@ -31,36 +32,41 @@
    					<h:panelGrid columns="3" styleClass="homebutton">
 	        			<h:commandLink action="#{userBean.goHome}" value="Home" />
 	        			<h:graphicImage value="/image/divider.png" styleClass="divider"/>
-    			    	<h:commandLink action="#{auth.logout()}" value="Log out"/>
+    			    	<h:commandLink action="#{auth.logout}" value="Log out"/>
 	        		</h:panelGrid>
 	        	</h:panelGrid>
-	        	
 	        	<ui:decorate template="popupwindows.xhtml"/>
 	        </div>
         </div>
 	</ui:define>
 	
 	<ui:define name="mainarea">
-       	<h:outputText value="#{userBean.watchedUser.name}'s tweets"/>
+		<h:panelGrid columns="1" styleClass="tweetlistheader">
+       		<h:outputText value="#{userBean.watchedUser.name}'s tweets"/>
+        </h:panelGrid>
         <h:panelGrid columns="1" >
             <a4j:outputPanel layout="block" id="tweetpanel">
                 <a4j:repeat value="#{tweetBean.watchedUserTweets}" var="tweet" rows="10" id="repeat">
-                    <rich:panel styleClass="panellisting">
-                        <f:facet name="header">
-                        	<h:panelGrid columns="2" styleClass="tweetheader">
+                    <h:panelGrid columns="2" styleClass="tweetarea">
+                		<a4j:mediaOutput element="img" cacheable="false" session="true" id="img" createContent="#{userBean.showUserImage}"
+            				value="#{tweet.ownerUsername}" mimeType="image/jpeg" alt="img" styleClass="avatarsmall"/>
+            			<rich:panel styleClass="panellisting">
+	                        <f:facet name="header">
+	                        	<h:panelGrid columns="2" styleClass="tweetheader">
 	                        	<h:panelGrid columns="2">
-	                            	<h:outputText value="#{tweet.name}"/>
-	                            	<h:outputText value="#{tweet.username}"/>
+	                            	<h:outputText value="#{tweet.ownerName}"/>
+	                            	<h:outputText value="#{tweet.ownerUsername}"/>
 	                        	</h:panelGrid>
 	                        	<h:panelGrid columns="1" styleClass="timeofpost">
 		                        	<h:outputText value="#{tweet.friendlyTimeOfPost}"/>
 		                        </h:panelGrid>
 	                        </h:panelGrid>
-                        </f:facet>
-                        <h:panelGrid columns="1">
-                            <h:outputText value="#{tweet.message}" />
-                        </h:panelGrid>
-                    </rich:panel>
+	                        </f:facet>
+	                        <h:panelGrid columns="1">
+	                            <h:outputText value="#{tweet.message}" />
+	                        </h:panelGrid>
+	                    </rich:panel>
+                    </h:panelGrid>
                 </a4j:repeat>
             </a4j:outputPanel>
             <a4j:outputPanel layout="block" styleClass="paginator">

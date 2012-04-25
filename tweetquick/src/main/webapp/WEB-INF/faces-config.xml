@@ -5,15 +5,6 @@
 	<name>Tweetquick</name>
 	
 	<navigation-rule>
-		<from-view-id>*</from-view-id>
-		<navigation-case>
-			<from-action>#{auth.logout}</from-action>
-			<if>#{true}</if>
-			<to-view-id>/login.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-	</navigation-rule>
-	<navigation-rule>
 		<from-view-id>/login.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{auth.login}</from-action>

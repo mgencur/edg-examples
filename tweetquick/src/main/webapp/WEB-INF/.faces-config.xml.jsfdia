@@ -2,9 +2,9 @@
 <PROCESS model-entity="JSFProcess">
  <PROCESS-ITEM NAME="rules:*" PATH="*" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:*:0" NAME="item" PATH="*" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID=":#{auth.logout}:#login.xhtml" NAME="output"
-    PATH="/login.xhtml" TARGET="rules:#login.xhtml"
-    TITLE="#{auth.logout}:[any]" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="userdetails::#userdetails.xhtml"
+    NAME="output" PATH="/userdetails.xhtml"
+    TARGET="rules:#userdetails.xhtml" TITLE="userdetails" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#login.xhtml" PATH="/login.xhtml"
@@ -22,13 +22,6 @@
   SHAPE="656,33,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:*:1" PATH="*" SHAPE="448,129,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:*:1" NAME="item" PATH="*" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID="userdetails::#userdetails.xhtml"
-    NAME="output" PATH="/userdetails.xhtml"
-    TARGET="rules:#userdetails.xhtml" TITLE="userdetails" model-entity="JSFProcessItemOutput"/>
-  </PROCESS-ITEM>
- </PROCESS-ITEM>
- <PROCESS-ITEM NAME="rules:*:2" PATH="*" SHAPE="240,145,0,0" model-entity="JSFProcessGroup">
-  <PROCESS-ITEM ID="rules:*:2" NAME="item" PATH="*" model-entity="JSFProcessItem">
    <PROCESS-ITEM-OUTPUT ID="home::#recenttweets.xhtml" NAME="output"
     PATH="/recenttweets.xhtml" TARGET="rules:#recenttweets.xhtml"
     TITLE="home" model-entity="JSFProcessItemOutput"/>

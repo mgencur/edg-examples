@@ -1,19 +1,45 @@
+/*
+ * JBoss, Home of Professional Open Source.
+ * Copyright 2012, Red Hat Middleware LLC, and individual contributors
+ * as indicated by the @author tags. See the copyright.txt file in the
+ * distribution for a full listing of individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package com.jboss.datagrid.tweetquick.session;
 
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.UserTransaction;
-
 import org.infinispan.api.BasicCache;
-
 import com.jboss.datagrid.tweetquick.model.User;
 
+/**
+ * 
+ * @author Martin Gencur
+ * 
+ */
 @Named
 @SessionScoped
 public class UserBean implements Serializable {
@@ -29,14 +55,25 @@ public class UserBean implements Serializable {
    private CacheContainerProvider provider;
 
    BasicCache<String, Object> userCache;
+   
+   @PostConstruct
+   public void initialize() {
+      watchedUser = auth.get().getUser(); 
+   }
 
    @Inject
    private UserTransaction utx;
-
-   public List<User> getWatching() {
-      if (watchedUser == null) {
-         watchedUser = auth.get().getUser();
+   
+   public void showUserImage(OutputStream out, Object data) {
+      try {
+         User u = (User) getUserCache().get((String) data);
+         ImageIO.write(u.getAvatar(), "jpg", out);
+      } catch (Exception e) {
+         throw new RuntimeException("Unable to load data for image", e);
       }
+   }
+   
+   public List<User> getWatching() {
       List<User> returnWatching = new LinkedList<User>();
       List<String> watching = watchedUser.getWatching();
       for (String username : watching) {
@@ -47,9 +84,6 @@ public class UserBean implements Serializable {
    }
 
    public List<User> getWatchers() {
-      if (watchedUser == null) {
-         watchedUser = auth.get().getUser();
-      }
       List<User> returnWatchers = new LinkedList<User>();
       List<String> watchers = watchedUser.getWatchers();
       for (String username : watchers) {
@@ -65,7 +99,7 @@ public class UserBean implements Serializable {
    }
 
    public String showUser(DisplayTweet tweet) {
-      this.watchedUser = (User) getUserCache().get(tweet.getUsername());
+      this.watchedUser = (User) getUserCache().get(tweet.getOwnerUsername());
       return "userdetails";
    }
 
@@ -88,11 +122,6 @@ public class UserBean implements Serializable {
 
    public boolean isWatchedByMe(User u) {
       List<String> watching = auth.get().getUser().getWatching();
-      // System.out.println("User " + auth.get().getUser().getName() + " is watching: " +
-      // auth.get().getUser().getWatching());
-      // System.out.println("Koho: " + u.getUsername());
-      // System.out.println("Test na watching: " + (watching.contains(u.getUsername()) ? true :
-      // false));
       return watching.contains(u.getUsername()) ? true : false;
    }
 
@@ -100,6 +129,25 @@ public class UserBean implements Serializable {
       User me = this.auth.get().getUser();
       List<String> watching = me.getWatching();
       watching.add(user.getUsername());
+      try {
+         utx.begin();
+         getUserCache().replace(me.getUsername(), me);
+         utx.commit();
+      } catch (Exception e) {
+         if (utx != null) {
+            try {
+               utx.rollback();
+            } catch (Exception e1) {
+            }
+         }
+      }
+      return null;
+   }
+   
+   public String stopWatchingUser(User user) {
+      User me = this.auth.get().getUser();
+      List<String> watching = me.getWatching();
+      watching.remove(user.getUsername());
       try {
          utx.begin();
          getUserCache().replace(me.getUsername(), me);

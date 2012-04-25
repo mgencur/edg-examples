@@ -1,5 +1,29 @@
+/*
+ * JBoss, Home of Professional Open Source.
+ * Copyright 2012, Red Hat Middleware LLC, and individual contributors
+ * as indicated by the @author tags. See the copyright.txt file in the
+ * distribution for a full listing of individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package com.jboss.datagrid.tweetquick.jsf;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -13,6 +37,7 @@ import javax.faces.application.Application;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import javax.imageio.ImageIO;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.transaction.UserTransaction;
@@ -35,6 +60,7 @@ public class InitializeCache implements SystemEventListener {
    private static final int USER_COUNT = 100;
 
    private static final int SEVEN_DAYS_IN_MILLISECONDS = 7 * 24 * 3600 * 1000;
+   
    Random randomNumber = new Random();
 
    private Logger log = Logger.getLogger(this.getClass().getName());
@@ -58,8 +84,15 @@ public class InitializeCache implements SystemEventListener {
       try {
          utx.begin();
          for (int i = 1; i != USER_COUNT; i++) {
-            User u = new User("user" + i, "Name" + i, "Surname" + i, "tmpPasswd",
-                     "Description of person " + i);
+            User u = null;
+            if (i % 2 == 1) {
+               u = new User("user" + i, "Name" + i, "Surname" + i, "tmpPasswd",
+                        "Description of person " + i, loadImageFromFile("images" + File.separator + "user1.jpg"));
+            } else {
+               u = new User("user" + i, "Name" + i, "Surname" + i, "tmpPasswd",
+                        "Description of person " + i, loadImageFromFile("images" + File.separator + "nophoto.jpg"));
+            }
+            
             String encryptedPass = hashPassword("pass" + i);
             u.setPassword(encryptedPass);
 
@@ -99,6 +132,16 @@ public class InitializeCache implements SystemEventListener {
             } catch (Exception e1) {
             }
          }
+      }
+   }
+   
+   private BufferedImage loadImageFromFile(String fileName) {
+      BufferedImage image = null;
+      try {
+         image = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream(fileName));
+         return image;
+      } catch (IOException e) {
+         throw new RuntimeException("Unable to load image from file " + fileName);
       }
    }
 

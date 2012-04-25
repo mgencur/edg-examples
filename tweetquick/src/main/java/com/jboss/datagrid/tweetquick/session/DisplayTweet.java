@@ -1,36 +1,70 @@
+/*
+ * JBoss, Home of Professional Open Source.
+ * Copyright 2012, Red Hat Middleware LLC, and individual contributors
+ * as indicated by the @author tags. See the copyright.txt file in the
+ * distribution for a full listing of individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package com.jboss.datagrid.tweetquick.session;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * 
+ * @author Martin Gencur
+ * 
+ */
 public class DisplayTweet {
 
    private static final long serialVersionUID = 29993133022854381L;
+   
    private static final long MS_PER_SECOND = 1000;
+   
    private static final long MS_PER_MINUTE = 60 * MS_PER_SECOND;
+   
    private static final long MS_PER_HOUR = 60 * MS_PER_MINUTE;
+   
    private static final long MS_PER_DAY = 24 * MS_PER_HOUR;
+   
    private static final SimpleDateFormat df = new SimpleDateFormat("d MMM");
 
-   private String name;
-   private String username;
+   private String ownerName;
+   
+   private String ownerUsername;
+   
    private String message;
+   
    private long timeOfPost;
 
    public DisplayTweet(String name, String username, String message, long timeOfPost) {
-      this.name = name;
-      this.username = username;
+      this.ownerName = name;
+      this.ownerUsername = username;
       this.message = message;
       this.timeOfPost = timeOfPost;
    }
 
-   public String getName() {
-      return name;
+   public String getOwnerName() {
+      return ownerName;
    }
 
-   public String getUsername() {
-      return username;
+   public String getOwnerUsername() {
+      return ownerUsername;
    }
 
    public String getMessage() {

@@ -21,12 +21,12 @@
  */
 package com.jboss.datagrid.tweetquick.model;
 
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 
  * 
  * @author Martin Gencur
  * 
@@ -38,13 +38,20 @@ public class User implements Serializable {
    private String username; // unique identifier
 
    private String name;
+   
    private String password;
+   
    private String whoami; // description of the person
+   
+   private BufferedImage avatar;
+   
    private List<TweetKey> tweets;
+   
    private List<String> watchers;
+   
    private List<String> watching;
 
-   public User(String username, String name, String surname, String password, String whoami) {
+   public User(String username, String name, String surname, String password, String whoami, BufferedImage avatar) {
       this.username = username;
       this.name = name;
       this.password = password;
@@ -52,6 +59,7 @@ public class User implements Serializable {
       this.tweets = new LinkedList<TweetKey>();
       this.watchers = new LinkedList<String>();
       this.watching = new LinkedList<String>();
+      this.avatar = avatar;
    }
 
    public void addFollower(String user) {
@@ -73,8 +81,6 @@ public class User implements Serializable {
    public void addTweet(TweetKey tweet) {
       this.tweets.add(tweet);
    }
-
-   // *************************************************************************************
 
    public String getUsername() {
       return username;
@@ -118,6 +124,14 @@ public class User implements Serializable {
 
    public List<String> getWatching() {
       return watching;
+   }
+
+   public BufferedImage getAvatar() {
+      return avatar;
+   }
+
+   public void setAvatar(BufferedImage avatar) {
+      this.avatar = avatar;
    }
 
 }
