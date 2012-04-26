@@ -90,10 +90,6 @@ public class TweetBean implements Serializable {
 
    public List<DisplayTweet> getRecentTweets() {
       LinkedList<DisplayTweet> recentTweets = new LinkedList<DisplayTweet>();
-      // generate some new tweets for random users to demonstrate users
-      // behavior
-      // generateNewTweets();
-
       List<String> following = auth.get().getUser().getWatching();
 
       // get all people that I'm following
@@ -106,7 +102,6 @@ public class TweetBean implements Serializable {
           * have, if yes, update our collection
           */
          for (TweetKey key : tweetKeys) {
-            // System.out.println("For each tweetkey");
             Tweet t = (Tweet) getTweetCache().get(key);
             DisplayTweet tw = new DisplayTweet(u.getName(), u.getUsername(), t.getMessage(),
                      t.getTimeOfPost());
@@ -116,17 +111,13 @@ public class TweetBean implements Serializable {
                int counter = 0;
                for (DisplayTweet recentTweet : recentTweets) {
                   if (tw.getTimeOfPost() > recentTweet.getTimeOfPost()) {
-                     // System.out.println("stored");
                      recentTweets.add(counter, tw); // insert one
-                     // position before
-                     // -> get ordered
-                     // collection
+                     // position before -> get ordered collection
                      if (recentTweets.size() >= RECENT_POSTS_LIMIT) {
                         recentTweets.removeLast();
                      }
                      break;
                   }
-                  // System.out.println("test recent keys");
                   counter++;
                }
             }
