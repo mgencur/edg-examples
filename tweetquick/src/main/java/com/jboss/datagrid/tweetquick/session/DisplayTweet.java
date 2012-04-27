@@ -58,6 +58,13 @@ public class DisplayTweet {
       this.message = message;
       this.timeOfPost = timeOfPost;
    }
+   
+   public DisplayTweet() {
+      this.ownerName = "";
+      this.ownerUsername = "";
+      this.message = "";
+      this.timeOfPost = 0;
+   }
 
    public String getOwnerName() {
       return ownerName;

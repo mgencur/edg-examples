@@ -57,7 +57,7 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public class InitializeCache implements SystemEventListener {
 
-   private static final int USER_COUNT = 100;
+   private static final int USER_COUNT = 500;
 
    private static final int SEVEN_DAYS_IN_MILLISECONDS = 7 * 24 * 3600 * 1000;
    
@@ -96,8 +96,8 @@ public class InitializeCache implements SystemEventListener {
             String encryptedPass = hashPassword("pass" + i);
             u.setPassword(encryptedPass);
 
-            // GENERATE 5 TWEETS FOR EACH USER
-            for (int j = 1; j != 5; j++) {
+            // GENERATE 500 TWEETS FOR EACH USER
+            for (int j = 1; j != 500; j++) {
                long randomTime = getRandomTime();
                Tweet t = new Tweet(u.getUsername(), "Tweet number " + j + " for user "
                         + u.getName() + " at " + new Date(randomTime), randomTime);
@@ -112,10 +112,10 @@ public class InitializeCache implements SystemEventListener {
          // GENERATE 10 RANDOM FOLLOWERS AND FOLLOWINGS FOR EACH USER
          for (int i = 1; i != USER_COUNT; i++) {
             User u = (User) users.get("user" + i);
-            for (User watcher : generateRandomUsers(u, 10, USER_COUNT)) {
+            for (User watcher : generateRandomUsers(u, 100, USER_COUNT)) {
                u.getWatchers().add(watcher.getUsername());
             }
-            for (User watching : generateRandomUsers(u, 30, USER_COUNT)) {
+            for (User watching : generateRandomUsers(u, 300, USER_COUNT)) {
                u.getWatching().add(watching.getUsername());
             }
             users.replace("user" + i, u);
