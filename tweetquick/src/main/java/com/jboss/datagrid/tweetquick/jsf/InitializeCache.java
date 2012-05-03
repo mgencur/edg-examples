@@ -96,8 +96,8 @@ public class InitializeCache implements SystemEventListener {
             String encryptedPass = hashPassword("pass" + i);
             u.setPassword(encryptedPass);
 
-            // GENERATE 500 TWEETS FOR EACH USER
-            for (int j = 1; j != 500; j++) {
+            // GENERATE 200 TWEETS FOR EACH USER
+            for (int j = 1; j != 200; j++) {
                long randomTime = getRandomTime();
                Tweet t = new Tweet(u.getUsername(), "Tweet number " + j + " for user "
                         + u.getName() + " at " + new Date(randomTime), randomTime);
@@ -115,7 +115,7 @@ public class InitializeCache implements SystemEventListener {
             for (User watcher : generateRandomUsers(u, 100, USER_COUNT)) {
                u.getWatchers().add(watcher.getUsername());
             }
-            for (User watching : generateRandomUsers(u, 300, USER_COUNT)) {
+            for (User watching : generateRandomUsers(u, 350, USER_COUNT)) {
                u.getWatching().add(watching.getUsername());
             }
             users.replace("user" + i, u);
