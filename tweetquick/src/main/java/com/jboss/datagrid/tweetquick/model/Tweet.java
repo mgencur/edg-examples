@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 /**
+ * Holds data for each post.
  * 
  * @author Martin Gencur
  * 

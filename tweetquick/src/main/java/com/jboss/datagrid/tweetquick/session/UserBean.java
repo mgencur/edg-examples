@@ -36,6 +36,8 @@ import org.infinispan.api.BasicCache;
 import com.jboss.datagrid.tweetquick.model.User;
 
 /**
+ * Handles operations with users (retrieving users from a cache, getting 
+ * watched/watching users, ...)
  * 
  * @author Martin Gencur
  * 

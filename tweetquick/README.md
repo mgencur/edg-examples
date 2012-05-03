@@ -1,6 +1,9 @@
 How to run the example
 ======================
 
+This application demonstrates transactional access to several caches and shows how
+in-memory data grid can effectively handle operations with lots of linked objects. 
+
 Building and deploying to JBoss AS 7
 ------------------------------------
 

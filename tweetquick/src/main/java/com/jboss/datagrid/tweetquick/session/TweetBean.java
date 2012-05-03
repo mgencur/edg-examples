@@ -36,6 +36,8 @@ import com.jboss.datagrid.tweetquick.model.TweetKey;
 import com.jboss.datagrid.tweetquick.model.User;
 
 /**
+ * Handles tweet operations (sending tweets, listing recent tweets from all watched people,
+ * listing own recent tweets, ...)
  * 
  * @author Martin Gencur
  * 
@@ -130,7 +132,7 @@ public class TweetBean implements Serializable {
             // go from newest to oldest tweet
             while (it.hasNext()) {
                TweetKey key = it.next();
-               //check only desired sector
+               //check only desired sector in the past
                if (maxAge > 0 && key.getTimeOfPost() >= (now - ages[maxAge - 1])) {
                   // if we checked this tweet in the previous sector, move on
                   continue;

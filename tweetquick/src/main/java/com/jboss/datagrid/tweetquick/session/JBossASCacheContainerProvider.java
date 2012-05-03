@@ -37,6 +37,7 @@ import org.infinispan.util.concurrent.IsolationLevel;
 import com.jboss.datagrid.tweetquick.session.CacheContainerProvider;
 
 /**
+ * Provides a preconfigured cache container to other classes in the application.
  * 
  * @author Martin Gencur
  * 

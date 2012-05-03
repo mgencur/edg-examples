@@ -33,6 +33,7 @@ import com.jboss.datagrid.tweetquick.jsf.InitializeCache;
 import com.jboss.datagrid.tweetquick.model.User;
 
 /**
+ * Authenticates a user by username/password.
  * 
  * @author Martin Gencur
  * 

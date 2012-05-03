@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Describes a person. Also contains links to owned tweets, watched/watching people. 
  * 
  * @author Martin Gencur
  * 

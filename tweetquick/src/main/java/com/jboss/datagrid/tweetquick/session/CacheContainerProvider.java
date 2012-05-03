@@ -25,8 +25,7 @@ import org.infinispan.api.BasicCacheContainer;
 
 /**
  * 
- * Subclasses should create an instance of a cache manager (DefaultCacheManager, RemoteCacheManager,
- * etc.)
+ * Implementations should create an instance of a cache manager (e.g. DefaultCacheManager)
  * 
  * @author Martin Gencur
  * 

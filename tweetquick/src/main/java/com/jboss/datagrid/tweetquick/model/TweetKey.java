@@ -22,6 +22,7 @@
 package com.jboss.datagrid.tweetquick.model;
 
 /**
+ * Identifies a tweet.
  * 
  * @author Martin Gencur
  * 

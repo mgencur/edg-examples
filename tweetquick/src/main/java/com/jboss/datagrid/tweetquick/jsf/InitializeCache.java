@@ -51,6 +51,8 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 
 /**
+ * A JSF listener used to populate the cache with users, tweets and user watchers/watching
+ * people.
  * 
  * @author Martin Gencur
  * 
@@ -61,7 +63,7 @@ public class InitializeCache implements SystemEventListener {
 
    private static final int SEVEN_DAYS_IN_MILLISECONDS = 7 * 24 * 3600 * 1000;
    
-   Random randomNumber = new Random();
+   private Random randomNumber = new Random();
 
    private Logger log = Logger.getLogger(this.getClass().getName());
 

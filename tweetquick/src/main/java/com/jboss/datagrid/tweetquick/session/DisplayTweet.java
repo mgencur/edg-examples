@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * Displays all information about tweets and their owners in JSF pages.
  * 
  * @author Martin Gencur
  * 
