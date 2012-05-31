@@ -117,7 +117,7 @@ public class InitializeCache implements SystemEventListener {
             for (User watcher : generateRandomUsers(u, 100, USER_COUNT)) {
                u.getWatchers().add(watcher.getUsername());
             }
-            for (User watching : generateRandomUsers(u, 350, USER_COUNT)) {
+            for (User watching : generateRandomUsers(u, 100, USER_COUNT)) {
                u.getWatching().add(watching.getUsername());
             }
             users.replace("user" + i, u);

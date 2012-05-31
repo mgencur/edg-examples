@@ -48,7 +48,7 @@
         	</h:panelGrid>
 	        <h:panelGrid columns="1" >
 	            <a4j:outputPanel layout="block" id="tweetpanel">
-	                <a4j:repeat value="#{tweetBean.recentTweets}" var="tweet" rows="8" id="repeat">
+	                <a4j:repeat value="#{tweetBean.recentTweets}" var="tweet" rows="#{tweetBean.displayedPosts}" id="repeat">
 	                	<h:panelGrid columns="2" styleClass="tweetarea">
 	                		<a4j:mediaOutput element="img" cacheable="false" session="true" id="img" createContent="#{userBean.showUserImage}"
 	            								value="#{tweet.ownerUsername}" mimeType="image/jpeg" alt="img" styleClass="avatarsmall"/>
@@ -72,7 +72,7 @@
 	                </a4j:repeat>
 	            </a4j:outputPanel>
 	            <a4j:outputPanel layout="block" styleClass="paginator">
-	                <rich:dataScroller for="repeat" render="tweetpanel"/>
+	                <h:commandButton action="#{tweetBean.moreTweets}" value="Show more tweets" class="signinbutton" />
 	            </a4j:outputPanel>
 	        </h:panelGrid>
 	</ui:define>

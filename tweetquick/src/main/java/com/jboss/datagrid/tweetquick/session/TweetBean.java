@@ -48,7 +48,11 @@ public class TweetBean implements Serializable {
 
    private static final long serialVersionUID = -8914061755188086355L;
 
-   private static final int RECENT_POSTS_LIMIT = 100;
+   private static final int INITIAL_POSTS_LIMIT = 30;
+   private int loadedPosts = INITIAL_POSTS_LIMIT;
+   private static final int INCREASE_LOADED_BY = 50; //increase loadedPosts by
+   private int showedPosts = 10;
+   private static final int INCREASE_SHOWED_BY = 10; //increase showedPosts by
    
    private static final long MINUTE = 60 * 1000;
    private static final long TEN_MINUTES = 10 * MINUTE;
@@ -75,6 +79,8 @@ public class TweetBean implements Serializable {
    BasicCache<String, Object> userCache;
 
    BasicCache<TweetKey, Object> tweetCache;
+   
+   LinkedList<DisplayTweet> recentTweets = new LinkedList<DisplayTweet>();
 
    @Inject
    private Instance<Authenticator> auth;
@@ -111,55 +117,73 @@ public class TweetBean implements Serializable {
    }
 
    public List<DisplayTweet> getRecentTweets() {
-      LinkedList<DisplayTweet> recentTweets = new LinkedList<DisplayTweet>();
-      List<String> following = auth.get().getUser().getWatching();
-      long[] ages = chooseRecentTweetsStrategy(following.size());
-      long now = System.currentTimeMillis();
-
-      // add initial entry (oldest possible one)
-      recentTweets.add(new DisplayTweet());
-      
-      // first check only tweets newer than 1 hour, then increase maxAge
-      for (int maxAge = 0; maxAge != ages.length; maxAge++) {
-         if (recentTweets.size() >= RECENT_POSTS_LIMIT) {
-            break;
-         }
-         // get all people that I'm following
-         for (String username : following) {
-            User u = (User) getUserCache().get(username);
-            LinkedList<TweetKey> tweetKeys = (LinkedList<TweetKey>) u.getTweets();
-            Iterator<TweetKey> it = tweetKeys.descendingIterator();
-            // go from newest to oldest tweet
-            while (it.hasNext()) {
-               TweetKey key = it.next();
-               //check only desired sector in the past
-               if (maxAge > 0 && key.getTimeOfPost() >= (now - ages[maxAge - 1])) {
-                  // if we checked this tweet in the previous sector, move on
-                  continue;
-               } else if (key.getTimeOfPost() < (now - ages[maxAge])) {
-                  // if the tweet is older than what belongs to this sector, move on
-                  break;
-               }
-               int position = 0;
-               //possibly add the tweet to newest tweets
-               for (DisplayTweet recentTweet : recentTweets) {
-                  if (key.getTimeOfPost() > recentTweet.getTimeOfPost()) {
-                     Tweet t = (Tweet) getTweetCache().get(key);
-                     DisplayTweet tw = new DisplayTweet(u.getName(), u.getUsername(), t.getMessage(), t.getTimeOfPost());
-                     recentTweets.add(position, tw); 
-                     if (recentTweets.size() > RECENT_POSTS_LIMIT) {
-                        recentTweets.removeLast();
-                     }
-                     break;
-                  }
-                  position++;
-               }
-            }
-         }
+      if (recentTweets.size() <= INITIAL_POSTS_LIMIT) {
+          reloadTweets(INITIAL_POSTS_LIMIT);
       }
-      return recentTweets;
+      if (showedPosts > loadedPosts) {
+          loadedPosts += INCREASE_LOADED_BY;
+          reloadTweets(loadedPosts);
+      }
+      return recentTweets.subList(0, showedPosts);
+   }
+   
+   /*
+    * Reload content of recentTweets list
+    */
+   private void reloadTweets(int limit) {
+       long now = System.currentTimeMillis();
+       List<String> following = auth.get().getUser().getWatching();
+       long[] ages = chooseRecentTweetsStrategy(following.size());
+       // add initial entry (oldest possible one)
+       recentTweets.add(new DisplayTweet());
+       // first check only tweets newer than 1 hour, then increase maxAge
+       for (int maxAge = 0; maxAge != ages.length; maxAge++) {
+          if (recentTweets.size() >= limit) {
+             break;
+          }
+          // get all people that I'm following
+          for (String username : following) {
+             User u = (User) getUserCache().get(username);
+             LinkedList<TweetKey> tweetKeys = (LinkedList<TweetKey>) u.getTweets();
+             Iterator<TweetKey> it = tweetKeys.descendingIterator();
+             // go from newest to oldest tweet
+             while (it.hasNext()) {
+                TweetKey key = it.next();
+                //check only desired sector in the past
+                if (maxAge > 0 && key.getTimeOfPost() >= (now - ages[maxAge - 1])) {
+                   // if we checked this tweet in the previous sector, move on
+                   continue;
+                } else if (key.getTimeOfPost() < (now - ages[maxAge])) {
+                   // if the tweet is older than what belongs to this sector, move on
+                   break;
+                }
+                int position = 0;
+                //possibly add the tweet to newest tweets
+                for (DisplayTweet recentTweet : recentTweets) {
+                   if (key.getTimeOfPost() > recentTweet.getTimeOfPost()) {
+                      Tweet t = (Tweet) getTweetCache().get(key);
+                      DisplayTweet tw = new DisplayTweet(u.getName(), u.getUsername(), t.getMessage(), t.getTimeOfPost());
+                      recentTweets.add(position, tw); 
+                      if (recentTweets.size() > limit) {
+                         recentTweets.removeLast();
+                      }
+                      break;
+                   }
+                   position++;
+                }
+             }
+          }
+       }
    }
 
+   public void moreTweets() {
+       showedPosts += INCREASE_SHOWED_BY;
+   }
+   
+   public int getDisplayedPosts() {
+       return showedPosts;   
+   }
+   
    private long[] chooseRecentTweetsStrategy(int size) {
       if (size < LOW_WATCH_LIMIT) {
          return agesByNumOfWatched[0];
