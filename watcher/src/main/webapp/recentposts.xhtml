@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+    
+<ui:composition template="template.xhtml">
+
+	<ui:define name="headerarea">
+        <div class="headerinput">
+       		<div id="headerinputleft">
+       			<a4j:mediaOutput element="img" cacheable="false" session="true" id="img" createContent="#{userBean.showUserImage}"
+            		value="#{auth.username}" mimeType="image/jpeg" alt="img" styleClass="avatar"/>
+       			<h:outputText value="#{auth.user.name}" styleClass="myname"/>
+       		</div>
+       		<div id="headerinputright">
+       			<h:panelGrid columns="1">
+       				<h:outputText value="What comes to your mind..."/>
+	        		<h:inputTextarea value="#{postBean.message}" id="message"/>
+	        		<h:commandButton action="#{postBean.sendPost}" value="Post" class="signinbutton" />
+	        	</h:panelGrid>
+	        	<h:panelGrid columns="2" styleClass="linkspanel">
+	        		<h:panelGrid columns="5">
+		        		<h:link outcome="myposts.jsf" value="My posts"/>
+		        		<h:graphicImage value="/image/divider.png" styleClass="divider"/>
+		        		<h:commandLink value="Watching">
+	       					<rich:componentControl target="popupfollowing" operation="show" />
+	   					</h:commandLink>
+		        		<h:graphicImage value="/image/divider.png" styleClass="divider"/>
+		        		<h:commandLink value="Watchers">
+	       					<rich:componentControl target="popupfollowers" operation="show" />
+	   					</h:commandLink>
+   					</h:panelGrid>
+   					<h:panelGrid columns="1" styleClass="homebutton">
+    			    	<h:commandLink action="#{auth.logout}" value="Log out"/>
+	        		</h:panelGrid>
+	        	</h:panelGrid>
+	        	<ui:decorate template="popupwindows.xhtml"/>
+	        </div>
+        </div>
+	</ui:define>
+	
+	<ui:define name="mainarea">
+			<h:panelGrid columns="1" styleClass="postlistheader" onmouseover="window.pageYOffset = #{postBean.displayedPosts}*100;">
+        		<h:outputText value="Recent posts"/>
+        	</h:panelGrid>
+	        <h:panelGrid columns="1" id="postpanelgrid">
+	            <a4j:outputPanel layout="block" id="postpanel">
+	                <a4j:repeat value="#{postBean.recentPosts}" var="post" rows="#{postBean.displayedPosts}" id="repeat">
+	                	<h:panelGrid columns="2" styleClass="postarea">
+	                		<a4j:mediaOutput element="img" cacheable="false" session="true" id="img" createContent="#{userBean.showUserImage}"
+	            								value="#{post.ownerUsername}" mimeType="image/jpeg" alt="img" styleClass="avatarsmall"/>
+	            			<rich:panel styleClass="panellisting">
+		                        <f:facet name="header">
+		                        	<h:panelGrid columns="2" styleClass="postheader">
+			                        	<h:panelGrid columns="3">
+			                        		<h:commandLink action="#{userBean.showUser(post)}" value="#{post.ownerName}"/>
+			                            	<h:outputText value="#{post.ownerUsername}"/>
+			                        	</h:panelGrid>
+			                        	<h:panelGrid columns="1" styleClass="timeofpost">
+			                        		<h:outputText value="#{post.friendlyTimeOfPost}"/>
+			                        	</h:panelGrid>
+		                        	</h:panelGrid>
+		                        </f:facet>
+		                        <h:panelGrid columns="1">
+		                            <h:outputText value="#{post.message}" />
+		                        </h:panelGrid>
+		                    </rich:panel>
+	                    </h:panelGrid>
+	                </a4j:repeat>
+	            </a4j:outputPanel>
+	            <a4j:outputPanel layout="block" styleClass="paginator">
+	                <h:commandButton action="#{postBean.morePosts}" value="Show more posts" class="signinbutton" id="showmorebutton"/>
+	            </a4j:outputPanel>
+	        </h:panelGrid>
+	</ui:define>
+	
+</ui:composition>
+
+</html>
