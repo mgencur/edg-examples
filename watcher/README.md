@@ -7,26 +7,20 @@ in-memory data grid can effectively handle operations with lots of linked object
 Building and deploying to JBoss AS 7
 ------------------------------------
 
-0) Obtain JDG distribution with productized Infinispan libraries (library distribution)
-
-1) Install libraries from the bundle into your local maven repository
-
-    `mvn initialize -Pinit-repo -Ddatagrid.dist=/home/anyuser/jboss-datagrid-library-6.0.0.ER6-redhat-1`
-    
-2) Start JBoss AS 7 where your application will run
+1) Start JBoss AS 7 where your application will run
 
     `$JBOSS_HOME/bin/standalone.sh`
 
-3) Build the application
+2) Build the application
 
     `mvn clean package`
 
-4) Deploy the application via jboss-as Maven plugin
+3) Deploy the application via jboss-as Maven plugin
 
     `mvn jboss-as:deploy`
 
-5) Go to http://localhost:8080/watcher
+4) Go to http://localhost:8080/watcher
 
-6) Undeploy the application
+5) Undeploy the application
 
     `mvn jboss-as:undeploy`
