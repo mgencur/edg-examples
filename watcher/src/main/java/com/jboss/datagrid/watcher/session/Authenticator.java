@@ -81,6 +81,10 @@ public class Authenticator implements Serializable {
       authenticate(); 
    }
 
+   public void logoutFromServlet() {
+      user = null;
+   }
+
    public void authenticate() {
       if (!isLoggedIn()) {
          try {

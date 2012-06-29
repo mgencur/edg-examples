@@ -30,8 +30,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 import javax.faces.application.Application;
 import javax.faces.event.AbortProcessingException;
@@ -59,7 +61,7 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public class InitializeCache implements SystemEventListener {
 
-   private static final int USER_COUNT = 500;
+   private static final int USER_COUNT = 200;
 
    private static final int SEVEN_DAYS_IN_MILLISECONDS = 7 * 24 * 3600 * 1000;
    
@@ -98,9 +100,15 @@ public class InitializeCache implements SystemEventListener {
             String encryptedPass = hashPassword("pass" + i);
             u.setPassword(encryptedPass);
 
-            // GENERATE 200 TWEETS FOR EACH USER
-            for (int j = 1; j != 200; j++) {
-               long randomTime = getRandomTime();
+            // GENERATE POSTS FOR EACH USER
+            int numGeneratedPosts = 100;
+            TreeSet<Long> randomTimesSorted = new TreeSet<Long>();
+            for (int j = 1; j != numGeneratedPosts; j++) {
+                randomTimesSorted.add(getRandomTime());
+            }
+
+            for (int j = 1; j != numGeneratedPosts; j++) {
+               long randomTime = randomTimesSorted.pollFirst();
                Post t = new Post(u.getUsername(), "Post number " + j + " for user "
                         + u.getName() + " at " + new Date(randomTime), randomTime);
                // store the post in a cache
@@ -111,13 +119,13 @@ public class InitializeCache implements SystemEventListener {
             users.put(u.getUsername(), u);
          }
 
-         // GENERATE 10 RANDOM FOLLOWERS AND FOLLOWINGS FOR EACH USER
+         // GENERATE RANDOM WATCHERS AND WATCHING FOR EACH USER
          for (int i = 1; i != USER_COUNT; i++) {
             User u = (User) users.get("user" + i);
-            for (User watcher : generateRandomUsers(u, 100, USER_COUNT)) {
+            for (User watcher : generateRandomUsers(u, 50, USER_COUNT)) {
                u.getWatchers().add(watcher.getUsername());
             }
-            for (User watching : generateRandomUsers(u, 100, USER_COUNT)) {
+            for (User watching : generateRandomUsers(u, 50, USER_COUNT)) {
                u.getWatching().add(watching.getUsername());
             }
             users.replace("user" + i, u);

@@ -43,12 +43,12 @@
 	</ui:define>
 	
 	<ui:define name="mainarea">
-			<h:panelGrid columns="1" styleClass="postlistheader" onmouseover="window.pageYOffset = #{postBean.displayedPosts}*100;">
+			<h:panelGrid columns="1" styleClass="postlistheader" onmouseover="window.pageYOffset = #{postBean.displayedPostsLimit}*100;">
         		<h:outputText value="Recent posts"/>
         	</h:panelGrid>
 	        <h:panelGrid columns="1" id="postpanelgrid">
 	            <a4j:outputPanel layout="block" id="postpanel">
-	                <a4j:repeat value="#{postBean.recentPosts}" var="post" rows="#{postBean.displayedPosts}" id="repeat">
+	                <a4j:repeat value="#{postBean.recentPosts}" var="post" rows="#{postBean.displayedPostsLimit}" id="repeat">
 	                	<h:panelGrid columns="2" styleClass="postarea">
 	                		<a4j:mediaOutput element="img" cacheable="false" session="true" id="img" createContent="#{userBean.showUserImage}"
 	            								value="#{post.ownerUsername}" mimeType="image/jpeg" alt="img" styleClass="avatarsmall"/>

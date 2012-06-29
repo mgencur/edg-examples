@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Instance;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -43,7 +43,7 @@ import com.jboss.datagrid.watcher.model.User;
  * 
  */
 @Named
-@SessionScoped
+@RequestScoped
 public class UserBean implements Serializable {
 
    private static final long serialVersionUID = -5419061180849357611L;

@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -99,9 +100,7 @@ public class PostBean implements Serializable {
       Post t = new Post(auth.get().getUsername(), message);
       try {
          utx.begin();
-         // todo - is it necessary to retrieve it again and not use the one
-         // in authenticator?
-         User u = (User) getUserCache().get(auth.get().getUsername());
+         User u = auth.get().getUser();
          getPostCache().put(t.getKey(), t);
          u.getPosts().add(t.getKey());
          getUserCache().replace(auth.get().getUsername(), u);
@@ -122,7 +121,7 @@ public class PostBean implements Serializable {
           reloadPosts(INITIAL_POSTS_LIMIT);
       }
       if (showedPosts > loadedPosts) {
-          loadedPosts += INCREASE_LOADED_BY;
+          loadedPosts = showedPosts;
           reloadPosts(loadedPosts);
       }
       return recentPosts.subList(0, showedPosts);
@@ -180,8 +179,12 @@ public class PostBean implements Serializable {
    public void morePosts() {
        showedPosts += INCREASE_SHOWED_BY;
    }
+
+   public void setDisplayedPostsLimit(int limit) {
+       showedPosts = limit;
+   }
    
-   public int getDisplayedPosts() {
+   public int getDisplayedPostsLimit() {
        return showedPosts;   
    }
    
