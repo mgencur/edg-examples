@@ -141,11 +141,13 @@ public class WatcherServlet extends HttpServlet {
             }
          }
 
+      } else {
+         answer.append("\n").append("Unknown command");
       }
 
-      if( answer.toString().length() != 0) {
-         response.setHeader("answer", answer.toString());
-      }
+//      if( answer.toString().length() != 0) {
+//         response.setHeader("answer", answer.toString());
+//      }
       PrintWriter out = response.getWriter();
       out.print(answer.toString());
       out.flush();
