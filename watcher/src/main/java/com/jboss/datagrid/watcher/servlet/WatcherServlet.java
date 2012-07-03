@@ -3,8 +3,7 @@ package com.jboss.datagrid.watcher.servlet;
 import com.jboss.datagrid.watcher.model.User;
 import com.jboss.datagrid.watcher.session.Authenticator;
 import com.jboss.datagrid.watcher.session.DisplayPost;
-import com.jboss.datagrid.watcher.session.PostBean;
-import com.jboss.datagrid.watcher.session.UserBean;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -14,7 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import com.jboss.datagrid.watcher.session.PostBean;
+import com.jboss.datagrid.watcher.session.UserBean;
 
 /**
  * A servlet that invokes application logic based on URL parameters. This is to
