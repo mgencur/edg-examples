@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<display-name>Chunchun Example</display-name>
+
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.xhtml</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Development</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>javax.faces.SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+
+	<!-- Resource Servlet - serves static resources and resources for specific 
+		components -->
+	<servlet>
+		<servlet-name>Resource Servlet</servlet-name>
+		<servlet-class>org.richfaces.webapp.ResourceServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Resource Servlet</servlet-name>
+		<url-pattern>/org.richfaces.resources/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Resource Mapping - resources will be served compressed and packed in 
+		production -->
+	<context-param>
+		<param-name>org.richfaces.resourceMapping.enabled</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+    	<param-name>org.richfaces.skin</param-name>
+    	<param-value>blueSky</param-value> <!-- deepMarine -->
+	</context-param>
+
+    <listener>
+        <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+    </listener>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+    <resource-env-ref>
+        <description>Object factory for the CDI Bean Manager</description>
+        <resource-env-ref-name>BeanManager</resource-env-ref-name>
+        <resource-env-ref-type>javax.enterprise.inject.spi.BeanManager</resource-env-ref-type>
+    </resource-env-ref>
+
+</web-app>
