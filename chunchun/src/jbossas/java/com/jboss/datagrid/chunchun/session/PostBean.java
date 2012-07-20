@@ -208,9 +208,11 @@ public class PostBean implements Serializable {
       List<PostKey> myPostKeys = auth.get().getUser().getPosts();
       for (PostKey key : myPostKeys) {
          Post t = (Post) getPostCache().get(key);
-         DisplayPost dispPost = new DisplayPost(auth.get().getUser().getName(), auth.get()
+         if (t != null) {
+            DisplayPost dispPost = new DisplayPost(auth.get().getUser().getName(), auth.get()
                   .getUser().getUsername(), t.getMessage(), t.getTimeOfPost());
-         myPosts.addFirst(dispPost);
+            myPosts.addFirst(dispPost);
+         }
       }
       return myPosts;
    }
@@ -220,9 +222,11 @@ public class PostBean implements Serializable {
       List<PostKey> myPostKeys = userBean.getWatchedUser().getPosts();
       for (PostKey key : myPostKeys) {
          Post t = (Post) getPostCache().get(key);
-         DisplayPost dispPost = new DisplayPost(userBean.getWatchedUser().getName(), userBean
+         if (t != null) {
+            DisplayPost dispPost = new DisplayPost(userBean.getWatchedUser().getName(), userBean
                   .getWatchedUser().getUsername(), t.getMessage(), t.getTimeOfPost());
-         userPosts.addFirst(dispPost);
+            userPosts.addFirst(dispPost);
+         }
       }
       return userPosts;
    }
