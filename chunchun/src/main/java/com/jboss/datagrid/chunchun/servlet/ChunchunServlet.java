@@ -1,5 +1,6 @@
 package com.jboss.datagrid.chunchun.servlet;
 
+import com.jboss.datagrid.chunchun.jsf.InitializeCache;
 import com.jboss.datagrid.chunchun.model.User;
 import com.jboss.datagrid.chunchun.session.Authenticator;
 import com.jboss.datagrid.chunchun.session.DisplayPost;
@@ -7,6 +8,7 @@ import com.jboss.datagrid.chunchun.session.DisplayPost;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Random;
 import javax.enterprise.inject.Instance;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,29 +50,33 @@ public class ChunchunServlet extends HttpServlet {
       }
 
       StringBuilder answer = new StringBuilder();
-      System.out.println("command: " + command);
-      System.out.println("userParam: " + userParam);
 
       if ("login".equals(command)) {
 
-         //http://localhost:8080/chunchun/watcherservlet?command=login
+         //http://localhost:8080/chunchun/chunchunservlet?command=login&user=
 
          if (!auth.get().isLoggedIn()) {
+            Random r = new Random(System.currentTimeMillis());
+            int randomUserId = r.nextInt(InitializeCache.USER_COUNT) + 1;
+            String username = "user" + randomUserId;
+            String password  = "pass" + randomUserId;
+            auth.get().setUsername(username);
+            auth.get().setPassword(password);
             auth.get().login();
             answer.append("\n").append("User Logged in");
          }
 
       } else if ("logout".equals(command)) {
 
-         //http://localhost:8080/chunchun/watcherservlet?command=logout
+         //http://localhost:8080/chunchun/chunchunservlet?command=logout
 
          auth.get().logoutFromServlet();
          answer.append("\n").append("User Logged out");
 
       } else if ("recentposts".equals(command)) {
 
-         //http://localhost:8080/chunchun/watcherservlet?command=recentposts     //limit defaults to 10
-         //http://localhost:8080/chunchun/watcherservlet?command=recentposts&limit=20
+         //http://localhost:8080/chunchun/chunchunservlet?command=recentposts     //limit defaults to 10
+         //http://localhost:8080/chunchun/chunchunservlet?command=recentposts&limit=20
 
          postBean.get().setDisplayedPostsLimit(displayLimitParam);
          List<DisplayPost> recentPosts = postBean.get().getRecentPosts();
@@ -81,7 +87,7 @@ public class ChunchunServlet extends HttpServlet {
 
       } else if ("newpost".equals(command)) {
 
-         //http://localhost:8080/chunchun/watcherservlet?command=newpost
+         //http://localhost:8080/chunchun/chunchunservlet?command=newpost
 
          postBean.get().setMessage("New message from mgencur");
          postBean.get().sendPost();
@@ -89,7 +95,7 @@ public class ChunchunServlet extends HttpServlet {
 
       } else if ("myposts".equals(command)) {
 
-         //http://localhost:8080/chunchun/watcherservlet?command=myposts
+         //http://localhost:8080/chunchun/chunchunservlet?command=myposts
 
          List<DisplayPost> myPosts = postBean.get().getMyPosts();
          for (DisplayPost post : myPosts) {
@@ -98,7 +104,7 @@ public class ChunchunServlet extends HttpServlet {
 
       } else if ("watching".equals(command)) {
 
-         //http://localhost:8080/chunchun/watcherservlet?command=watching
+         //http://localhost:8080/chunchun/chunchunservlet?command=watching
 
          List<User> watchedByMe = userBean.get().getWatching();
          for (User user : watchedByMe) {
@@ -107,7 +113,7 @@ public class ChunchunServlet extends HttpServlet {
 
       } else if ("watchers".equals(command)) {
 
-         //http://localhost:8080/chunchun/watcherservlet?command=watchers
+         //http://localhost:8080/chunchun/chunchunservlet?command=watchers
 
          List<User> watchers = userBean.get().getWatchers();
          for (User user : watchers) {
@@ -116,7 +122,7 @@ public class ChunchunServlet extends HttpServlet {
 
       } else if ("watchuser".equals(command)) { //watch user according to userParam parameter
 
-         //http://localhost:8080/chunchun/watcherservlet?command=watchuser&user=NameXY
+         //http://localhost:8080/chunchun/chunchunservlet?command=watchuser&user=NameXY
 
          List<User> watchers = userBean.get().getWatchers();
          for (User u : watchers) {
@@ -132,7 +138,7 @@ public class ChunchunServlet extends HttpServlet {
 
       } else if ("stopwatchinguser".equals(command)) {
 
-         //http://localhost:8080/chunchun/watcherservlet?command=stopwatchinguser&user=NameXY
+         //http://localhost:8080/chunchun/chunchunservlet?command=stopwatchinguser&user=NameXY
 
          List<User> watchedByMe = userBean.get().getWatching();
          for (User u : watchedByMe) {

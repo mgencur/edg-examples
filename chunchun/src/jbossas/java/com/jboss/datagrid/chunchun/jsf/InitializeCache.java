@@ -60,7 +60,7 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public class InitializeCache implements SystemEventListener {
 
-   private static final int USER_COUNT = 200;
+   public static final int USER_COUNT = 200;
 
    private static final int SEVEN_DAYS_IN_MILLISECONDS = 7 * 24 * 3600 * 1000;
 

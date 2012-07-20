@@ -25,6 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Describes a person. Also contains links to owned posts, watched/watching people.
@@ -46,20 +47,20 @@ public class User implements Serializable {
    
    private BufferedImage avatar;
    
-   private List<PostKey> posts;
+   private CopyOnWriteArrayList<PostKey> posts;
    
-   private List<String> watchers;
+   private CopyOnWriteArrayList<String> watchers;
    
-   private List<String> watching;
+   private CopyOnWriteArrayList<String> watching;
 
    public User(String username, String name, String surname, String password, String whoami, BufferedImage avatar) {
       this.username = username;
       this.name = name;
       this.password = password;
       this.whoami = whoami;
-      this.posts = new LinkedList<PostKey>();
-      this.watchers = new LinkedList<String>();
-      this.watching = new LinkedList<String>();
+      this.posts = new CopyOnWriteArrayList<PostKey>();
+      this.watchers = new CopyOnWriteArrayList<String>();
+      this.watching = new CopyOnWriteArrayList<String>();
       this.avatar = avatar;
    }
 

@@ -22,9 +22,11 @@
 package com.jboss.datagrid.chunchun.session;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -143,8 +145,10 @@ public class PostBean implements Serializable {
           // get all people that I'm following
           for (String username : following) {
              User u = (User) getUserCache().get(username);
-             LinkedList<PostKey> postKeys = (LinkedList<PostKey>) u.getPosts();
-             Iterator<PostKey> it = postKeys.descendingIterator();
+             CopyOnWriteArrayList<PostKey> postKeys = (CopyOnWriteArrayList<PostKey>) u.getPosts();
+             LinkedList<PostKey> postKeysLinked = new LinkedList<PostKey>();
+             postKeysLinked.addAll(postKeys);
+             Iterator<PostKey> it = postKeysLinked.descendingIterator();
              // go from newest to oldest post
              while (it.hasNext()) {
                 PostKey key = it.next();
