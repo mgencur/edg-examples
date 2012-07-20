@@ -4,12 +4,16 @@ import com.jboss.datagrid.chunchun.jsf.InitializeCache;
 import com.jboss.datagrid.chunchun.model.User;
 import com.jboss.datagrid.chunchun.session.Authenticator;
 import com.jboss.datagrid.chunchun.session.DisplayPost;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Random;
+import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.inject.Inject;
@@ -30,15 +34,6 @@ import com.jboss.datagrid.chunchun.session.UserBean;
 @WebServlet(urlPatterns={"/chunchunservlet"})
 public class ChunchunServlet extends HttpServlet {
 
-   @Inject
-   private Instance<Authenticator> auth;
-
-   @Inject
-   private Instance<PostBean> postBean;
-
-   @Inject
-   private Instance<UserBean> userBean;
-
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
       String command = request.getParameter("command");
       String userParam = request.getParameter("user"); //in case we need to specify a user for an operation
@@ -50,19 +45,22 @@ public class ChunchunServlet extends HttpServlet {
       }
 
       StringBuilder answer = new StringBuilder();
+      Authenticator auth = getAuthenticator();
+      PostBean postBean = getPostBean();
+      UserBean userBean = getUserBean();
 
       if ("login".equals(command)) {
 
          //http://localhost:8080/chunchun/chunchunservlet?command=login&user=
 
-         if (!auth.get().isLoggedIn()) {
+         if (!auth.isLoggedIn()) {
             Random r = new Random(System.currentTimeMillis());
             int randomUserId = r.nextInt(InitializeCache.USER_COUNT) + 1;
             String username = "user" + randomUserId;
             String password  = "pass" + randomUserId;
-            auth.get().setUsername(username);
-            auth.get().setPassword(password);
-            auth.get().login();
+            auth.setUsername(username);
+            auth.setPassword(password);
+            auth.login();
             answer.append("\n").append("User Logged in");
          }
 
@@ -70,7 +68,7 @@ public class ChunchunServlet extends HttpServlet {
 
          //http://localhost:8080/chunchun/chunchunservlet?command=logout
 
-         auth.get().logoutFromServlet();
+         auth.logoutFromServlet();
          answer.append("\n").append("User Logged out");
 
       } else if ("recentposts".equals(command)) {
@@ -78,9 +76,9 @@ public class ChunchunServlet extends HttpServlet {
          //http://localhost:8080/chunchun/chunchunservlet?command=recentposts     //limit defaults to 10
          //http://localhost:8080/chunchun/chunchunservlet?command=recentposts&limit=20
 
-         postBean.get().setDisplayedPostsLimit(displayLimitParam);
-         List<DisplayPost> recentPosts = postBean.get().getRecentPosts();
-         answer.append("\n").append("Displayed: " + postBean.get().getDisplayedPostsLimit()).append("\n");
+         postBean.setDisplayedPostsLimit(displayLimitParam);
+         List<DisplayPost> recentPosts = postBean.getRecentPosts();
+         answer.append("\n").append("Displayed: " + postBean.getDisplayedPostsLimit()).append("\n");
          for (DisplayPost post : recentPosts) {
             answer.append("\n").append(post.getMessage());
          }
@@ -89,15 +87,15 @@ public class ChunchunServlet extends HttpServlet {
 
          //http://localhost:8080/chunchun/chunchunservlet?command=newpost
 
-         postBean.get().setMessage("New message from mgencur");
-         postBean.get().sendPost();
-         answer.append("\n").append("New post sent: " + postBean.get().getMessage());
+         postBean.setMessage("New message from mgencur");
+         postBean.sendPost();
+         answer.append("\n").append("New post sent: " + postBean.getMessage());
 
       } else if ("myposts".equals(command)) {
 
          //http://localhost:8080/chunchun/chunchunservlet?command=myposts
 
-         List<DisplayPost> myPosts = postBean.get().getMyPosts();
+         List<DisplayPost> myPosts = postBean.getMyPosts();
          for (DisplayPost post : myPosts) {
             answer.append("\n").append(post.getMessage());
          }
@@ -106,7 +104,7 @@ public class ChunchunServlet extends HttpServlet {
 
          //http://localhost:8080/chunchun/chunchunservlet?command=watching
 
-         List<User> watchedByMe = userBean.get().getWatching();
+         List<User> watchedByMe = userBean.getWatching();
          for (User user : watchedByMe) {
             answer.append("\n").append(user.getName() + " (" + user.getWhoami() + ")");
          }
@@ -115,7 +113,7 @@ public class ChunchunServlet extends HttpServlet {
 
          //http://localhost:8080/chunchun/chunchunservlet?command=watchers
 
-         List<User> watchers = userBean.get().getWatchers();
+         List<User> watchers = userBean.getWatchers();
          for (User user : watchers) {
             answer.append("\n").append(user.getName() + " (" + user.getWhoami() + ")");
          }
@@ -124,11 +122,11 @@ public class ChunchunServlet extends HttpServlet {
 
          //http://localhost:8080/chunchun/chunchunservlet?command=watchuser&user=NameXY
 
-         List<User> watchers = userBean.get().getWatchers();
+         List<User> watchers = userBean.getWatchers();
          for (User u : watchers) {
             if (u.getName().equals(userParam)) {
-               if (!userBean.get().isWatchedByMe(u)) {
-                  userBean.get().watchUser(u);
+               if (!userBean.isWatchedByMe(u)) {
+                  userBean.watchUser(u);
                   answer.append("\n").append("Started watching user " + u.getName());
                }  else {
                   answer.append("\n").append("NoOP - I'm already watching that user");
@@ -140,10 +138,10 @@ public class ChunchunServlet extends HttpServlet {
 
          //http://localhost:8080/chunchun/chunchunservlet?command=stopwatchinguser&user=NameXY
 
-         List<User> watchedByMe = userBean.get().getWatching();
+         List<User> watchedByMe = userBean.getWatching();
          for (User u : watchedByMe) {
             if (u.getUsername().equals(userParam)) {
-               userBean.get().stopWatchingUser(u);
+               userBean.stopWatchingUser(u);
             }
          }
 
@@ -157,5 +155,45 @@ public class ChunchunServlet extends HttpServlet {
       PrintWriter out = response.getWriter();
       out.print(answer.toString());
       out.flush();
+   }
+
+   private Authenticator getAuthenticator() {
+      Authenticator auth = getContextualInstance(getBeanManagerFromJNDI(), Authenticator.class);
+      return auth;
+   }
+
+   private PostBean getPostBean() {
+      PostBean postBean = getContextualInstance(getBeanManagerFromJNDI(), PostBean.class);
+      return postBean;
+   }
+
+   private UserBean getUserBean() {
+      UserBean userBean = getContextualInstance(getBeanManagerFromJNDI(), UserBean.class);
+      return userBean;
+   }
+
+   private BeanManager getBeanManagerFromJNDI() {
+      InitialContext context;
+      Object result;
+      try {
+         context = new InitialContext();
+         result = context.lookup("java:comp/BeanManager");
+      } catch (NamingException e) {
+         throw new RuntimeException("BeanManager could not be found in JNDI", e);
+      }
+      return (BeanManager) result;
+   }
+
+   @SuppressWarnings("unchecked")
+   public <T> T getContextualInstance(final BeanManager manager, final Class<T> type) {
+      T result = null;
+      Bean<T> bean = (Bean<T>) manager.resolve(manager.getBeans(type));
+      if (bean != null) {
+         CreationalContext<T> context = manager.createCreationalContext(bean);
+         if (context != null) {
+            result = (T) manager.getReference(bean, type, context);
+         }
+      }
+      return result;
    }
 }
