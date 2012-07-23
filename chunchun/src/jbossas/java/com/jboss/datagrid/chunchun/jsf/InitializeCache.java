@@ -86,7 +86,7 @@ public class InitializeCache implements SystemEventListener {
 
       try {
          utx.begin();
-         for (int i = 1; i != USER_COUNT; i++) {
+         for (int i = 1; i <= USER_COUNT; i++) {
             User u = null;
             if (i % 2 == 1) {
                u = new User("user" + i, "Name" + i, "Surname" + i, "tmpPasswd",
