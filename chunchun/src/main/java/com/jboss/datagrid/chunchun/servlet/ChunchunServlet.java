@@ -38,7 +38,7 @@ import com.jboss.datagrid.chunchun.session.UserBean;
 public class ChunchunServlet extends HttpServlet {
 
    private static Map<Integer, Boolean> userMap = new HashMap<Integer, Boolean>();   //registered occupied users
-   private static AtomicInteger userCount = new AtomicInteger(0);
+   private static int userCount = 0;
 
    static {
       for (int i = 1; i != InitializeCache.USER_COUNT; i++) {
@@ -47,9 +47,10 @@ public class ChunchunServlet extends HttpServlet {
    }
 
    private static synchronized int generateRandomUser() {
-      int index = userCount.incrementAndGet();
+      userCount = 0;
+      int index = ++userCount;
       while (userMap.get(index).equals(true) && index != InitializeCache.USER_COUNT) {
-         index = userCount.incrementAndGet();
+         index = ++userCount;
       }
       userMap.put(index, true);
       return index;
@@ -95,6 +96,7 @@ public class ChunchunServlet extends HttpServlet {
 
          String indexStr = auth.getUsername().substring(4);
          int index = new Integer(indexStr);
+
          ChunchunServlet.unregisterUser(index);
          auth.logoutFromServlet();
          answer.append("\n").append("User Logged out");
