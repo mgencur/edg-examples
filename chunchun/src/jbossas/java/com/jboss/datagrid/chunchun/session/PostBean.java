@@ -165,10 +165,12 @@ public class PostBean implements Serializable {
                 for (DisplayPost recentPost : recentPosts) {
                    if (key.getTimeOfPost() > recentPost.getTimeOfPost()) {
                       Post t = (Post) getPostCache().get(key);
-                      DisplayPost tw = new DisplayPost(u.getName(), u.getUsername(), t.getMessage(), t.getTimeOfPost());
-                      recentPosts.add(position, tw);
-                      if (recentPosts.size() > limit) {
-                         recentPosts.removeLast();
+                      if (t != null) {
+                         DisplayPost tw = new DisplayPost(u.getName(), u.getUsername(), t.getMessage(), t.getTimeOfPost());
+                         recentPosts.add(position, tw);
+                         if (recentPosts.size() > limit) {
+                            recentPosts.removeLast();
+                         }
                       }
                       break;
                    }
