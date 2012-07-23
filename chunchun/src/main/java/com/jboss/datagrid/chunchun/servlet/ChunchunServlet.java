@@ -6,8 +6,11 @@ import com.jboss.datagrid.chunchun.session.Authenticator;
 import com.jboss.datagrid.chunchun.session.DisplayPost;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.Bean;
@@ -34,6 +37,28 @@ import com.jboss.datagrid.chunchun.session.UserBean;
 @WebServlet(urlPatterns={"/chunchunservlet"})
 public class ChunchunServlet extends HttpServlet {
 
+   private static Map<Integer, Boolean> userMap = new HashMap<Integer, Boolean>();   //registered occupied users
+   private static AtomicInteger userCount = new AtomicInteger(0);
+
+   static {
+      for (int i = 1; i != InitializeCache.USER_COUNT; i++) {
+         userMap.put(new Integer(i), false);
+      }
+   }
+
+   private static synchronized int generateRandomUser() {
+      int index = userCount.incrementAndGet();
+      while (userMap.get(index).equals(true) && index != InitializeCache.USER_COUNT) {
+         index = userCount.incrementAndGet();
+      }
+      userMap.put(index, true);
+      return index;
+   }
+
+   private static synchronized void unregisterUser(int index) {
+      userMap.put(index, false);
+   }
+
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
       String command = request.getParameter("command");
       String userParam = request.getParameter("user"); //in case we need to specify a user for an operation
@@ -55,7 +80,7 @@ public class ChunchunServlet extends HttpServlet {
 
          if (!auth.isLoggedIn()) {
             Random r = new Random(System.currentTimeMillis());
-            int randomUserId = r.nextInt(InitializeCache.USER_COUNT) + 1;
+            int randomUserId = ChunchunServlet.generateRandomUser();
             String username = "user" + randomUserId;
             String password  = "pass" + randomUserId;
             auth.setUsername(username);
@@ -68,6 +93,9 @@ public class ChunchunServlet extends HttpServlet {
 
          //http://localhost:8080/chunchun/chunchunservlet?command=logout
 
+         String indexStr = auth.getUsername().substring(4);
+         int index = new Integer(indexStr);
+         ChunchunServlet.unregisterUser(index);
          auth.logoutFromServlet();
          answer.append("\n").append("User Logged out");
 
