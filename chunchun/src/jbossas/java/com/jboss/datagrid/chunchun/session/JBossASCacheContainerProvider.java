@@ -52,7 +52,7 @@ public class JBossASCacheContainerProvider implements CacheContainerProvider {
                   .globalJmxStatistics().enable().jmxDomain("chunchun").build();
          Configuration loc = new ConfigurationBuilder().jmxStatistics().enable().clustering()
                   .cacheMode(CacheMode.LOCAL).transaction()
-                  .useSynchronization(false)
+                  .useSynchronization(true)
                   .transactionMode(TransactionMode.TRANSACTIONAL).autoCommit(false)
                   .lockingMode(LockingMode.OPTIMISTIC)
                   .transactionManagerLookup(new GenericTransactionManagerLookup()).locking()
