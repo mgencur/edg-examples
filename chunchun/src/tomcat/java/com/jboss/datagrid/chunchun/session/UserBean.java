@@ -80,8 +80,10 @@ public class UserBean implements Serializable {
       List<User> returnWatching = new LinkedList<User>();
       List<String> watching = watchedUser.getWatching();
       for (String username : watching) {
-         User u = (User) getUserCache().get(username);
-         returnWatching.add(u);
+         if (username != null) {
+            User u = (User) getUserCache().get(username);
+            returnWatching.add(u);
+         }
       }
       return returnWatching;
    }
