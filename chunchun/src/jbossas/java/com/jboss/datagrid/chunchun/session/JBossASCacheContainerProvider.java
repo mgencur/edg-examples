@@ -36,7 +36,7 @@ import org.infinispan.transaction.lookup.GenericTransactionManagerLookup;
 import org.infinispan.util.concurrent.IsolationLevel;
 
 /**
- * Provides a preconfigured cache container to other classes in the application.
+ * Provides a pre-configured cache container to other classes in the application.
  * 
  * @author Martin Gencur
  * 
@@ -52,10 +52,11 @@ public class JBossASCacheContainerProvider implements CacheContainerProvider {
                   .globalJmxStatistics().enable().jmxDomain("chunchun").build();
          Configuration loc = new ConfigurationBuilder().jmxStatistics().enable().clustering()
                   .cacheMode(CacheMode.LOCAL).transaction()
+                  .useSynchronization(false)
                   .transactionMode(TransactionMode.TRANSACTIONAL).autoCommit(false)
                   .lockingMode(LockingMode.OPTIMISTIC)
                   .transactionManagerLookup(new GenericTransactionManagerLookup()).locking()
-                  .isolationLevel(IsolationLevel.REPEATABLE_READ).build();
+                  .isolationLevel(IsolationLevel.READ_COMMITTED).build();
          manager = new DefaultCacheManager(glob, loc, true);
       }
       return manager;
