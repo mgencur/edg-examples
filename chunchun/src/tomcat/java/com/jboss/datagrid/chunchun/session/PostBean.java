@@ -30,6 +30,7 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.TransactionManager;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.jboss.datagrid.chunchun.model.Post;
 import org.infinispan.CacheImpl;
@@ -144,8 +145,10 @@ public class PostBean implements Serializable {
           // get all people that I'm following
           for (String username : following) {
              User u = (User) getUserCache().get(username);
-             LinkedList<PostKey> postKeys = (LinkedList<PostKey>) u.getPosts();
-             Iterator<PostKey> it = postKeys.descendingIterator();
+             CopyOnWriteArrayList<PostKey> postKeys = (CopyOnWriteArrayList<PostKey>) u.getPosts();
+             LinkedList<PostKey> postKeysLinked = new LinkedList<PostKey>();
+             postKeysLinked.addAll(postKeys);
+             Iterator<PostKey> it = postKeysLinked.descendingIterator();
              // go from newest to oldest post
              while (it.hasNext()) {
                 PostKey key = it.next();
@@ -162,10 +165,12 @@ public class PostBean implements Serializable {
                 for (DisplayPost recentPost : recentPosts) {
                    if (key.getTimeOfPost() > recentPost.getTimeOfPost()) {
                       Post t = (Post) getPostCache().get(key);
-                      DisplayPost tw = new DisplayPost(u.getName(), u.getUsername(), t.getMessage(), t.getTimeOfPost());
-                      recentPosts.add(position, tw);
-                      if (recentPosts.size() > limit) {
-                         recentPosts.removeLast();
+                      if (t != null) {
+                         DisplayPost tw = new DisplayPost(u.getName(), u.getUsername(), t.getMessage(), t.getTimeOfPost());
+                         recentPosts.add(position, tw);
+                         if (recentPosts.size() > limit) {
+                            recentPosts.removeLast();
+                         }
                       }
                       break;
                    }
@@ -205,9 +210,11 @@ public class PostBean implements Serializable {
       List<PostKey> myPostKeys = auth.get().getUser().getPosts();
       for (PostKey key : myPostKeys) {
          Post t = (Post) getPostCache().get(key);
-         DisplayPost dispPost = new DisplayPost(auth.get().getUser().getName(), auth.get()
-                  .getUser().getUsername(), t.getMessage(), t.getTimeOfPost());
-         myPosts.addFirst(dispPost);
+         if (t != null) {
+            DisplayPost dispPost = new DisplayPost(auth.get().getUser().getName(), auth.get()
+              .getUser().getUsername(), t.getMessage(), t.getTimeOfPost());
+            myPosts.addFirst(dispPost);
+         }
       }
       return myPosts;
    }
@@ -217,9 +224,11 @@ public class PostBean implements Serializable {
       List<PostKey> myPostKeys = userBean.getWatchedUser().getPosts();
       for (PostKey key : myPostKeys) {
          Post t = (Post) getPostCache().get(key);
-         DisplayPost dispPost = new DisplayPost(userBean.getWatchedUser().getName(), userBean
+         if (t != null) {
+            DisplayPost dispPost = new DisplayPost(userBean.getWatchedUser().getName(), userBean
                   .getWatchedUser().getUsername(), t.getMessage(), t.getTimeOfPost());
-         userPosts.addFirst(dispPost);
+            userPosts.addFirst(dispPost);
+         }
       }
       return userPosts;
    }

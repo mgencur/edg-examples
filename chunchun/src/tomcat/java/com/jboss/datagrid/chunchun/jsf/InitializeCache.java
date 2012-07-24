@@ -62,7 +62,7 @@ import java.util.logging.Logger;
  */
 public class InitializeCache implements SystemEventListener {
 
-   private static final int USER_COUNT = 200;
+   public static final int USER_COUNT = 3000;
 
    private static final int SEVEN_DAYS_IN_MILLISECONDS = 7 * 24 * 3600 * 1000;
    
@@ -88,7 +88,7 @@ public class InitializeCache implements SystemEventListener {
 
       try {
          tm.begin();
-         for (int i = 1; i != USER_COUNT; i++) {
+         for (int i = 1; i <= USER_COUNT; i++) {
             User u = null;
             if (i % 2 == 1) {
                u = new User("user" + i, "Name" + i, "Surname" + i, "tmpPasswd",
@@ -102,7 +102,7 @@ public class InitializeCache implements SystemEventListener {
             u.setPassword(encryptedPass);
 
             // GENERATE POSTS FOR EACH USER
-            int numGeneratedPosts = 100;
+            int numGeneratedPosts = 20;
             TreeSet<Long> randomTimesSorted = new TreeSet<Long>();
             for (int j = 1; j != numGeneratedPosts; j++) {
                 randomTimesSorted.add(getRandomTime());
@@ -123,10 +123,10 @@ public class InitializeCache implements SystemEventListener {
          // GENERATE RANDOM WATCHERS AND WATCHING FOR EACH USER
          for (int i = 1; i != USER_COUNT; i++) {
             User u = (User) users.get("user" + i);
-            for (User watcher : generateRandomUsers(u, 50, USER_COUNT)) {
+            for (User watcher : generateRandomUsers(u, 20, USER_COUNT)) {
                u.getWatchers().add(watcher.getUsername());
             }
-            for (User watching : generateRandomUsers(u, 50, USER_COUNT)) {
+            for (User watching : generateRandomUsers(u, 20, USER_COUNT)) {
                u.getWatching().add(watching.getUsername());
             }
             users.replace("user" + i, u);
