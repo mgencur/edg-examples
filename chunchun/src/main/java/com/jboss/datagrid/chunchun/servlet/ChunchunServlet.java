@@ -49,8 +49,11 @@ public class ChunchunServlet extends HttpServlet {
    private static synchronized int generateRandomUser() {
       userCount = 0;
       int index = ++userCount;
-      while (userMap.get(index).equals(true) && index != InitializeCache.USER_COUNT) {
+      while (index != InitializeCache.USER_COUNT && userMap.get(index).equals(true)) {
          index = ++userCount;
+      }
+      if (index == InitializeCache.USER_COUNT) {
+         throw new RuntimeException("No users available in a user pool.");
       }
       userMap.put(index, true);
       return index;
