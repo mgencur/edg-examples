@@ -56,7 +56,7 @@ public class JBossASCacheContainerProvider implements CacheContainerProvider {
                   .transactionMode(TransactionMode.TRANSACTIONAL).autoCommit(false)
                   .lockingMode(LockingMode.OPTIMISTIC)
                   .transactionManagerLookup(new GenericTransactionManagerLookup()).locking()
-                  .isolationLevel(IsolationLevel.READ_COMMITTED).build();
+                  .isolationLevel(IsolationLevel.REPEATABLE_READ).build();
          manager = new DefaultCacheManager(glob, loc, true);
       }
       return manager;
