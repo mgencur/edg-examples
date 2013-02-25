@@ -121,15 +121,24 @@ public class InitializeCache implements SystemEventListener {
          // GENERATE RANDOM WATCHERS AND WATCHING FOR EACH USER
          for (int i = 1; i != USER_COUNT; i++) {
             User u = (User) users.get("user" + i);
-            for (User watcher : generateRandomUsers(u, 20, USER_COUNT)) {
-               u.getWatchers().add(watcher.getUsername());
-            }
             for (User watching : generateRandomUsers(u, 20, USER_COUNT)) {
-               u.getWatching().add(watching.getUsername());
+               if (!u.getUsername().equals(watching.getUsername())) {
+                  u.getWatching().add(watching.getUsername());
+               }
             }
             users.replace("user" + i, u);
          }
 
+         for (int i = 1; i != USER_COUNT; i++) {
+            User u = (User) users.get("user" + i);
+            for (String username: u.getWatching()) {
+               User us = (User) users.get(username);
+               if (!us.getWatchers().contains(u.getUsername())) {
+                  us.getWatchers().add(u.getUsername());
+                  users.replace(us.getUsername(), us);
+               }
+            }
+         }
          utx.commit();
          log.info("Successfully imported data!");
       } catch (Exception e) {

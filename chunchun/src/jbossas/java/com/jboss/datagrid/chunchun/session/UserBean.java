@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -43,7 +43,7 @@ import com.jboss.datagrid.chunchun.model.User;
  * 
  */
 @Named
-@RequestScoped
+@SessionScoped
 public class UserBean implements Serializable {
 
    private static final long serialVersionUID = -5419061180849357611L;
@@ -126,16 +126,22 @@ public class UserBean implements Serializable {
 
    public boolean isWatchedByMe(User u) {
       List<String> watching = auth.get().getUser().getWatching();
-      return watching.contains(u.getUsername()) ? true : false;
+      return watching.contains(u.getUsername());
+   }
+
+   public boolean isMe(User u) {
+      return auth.get().getUser().equals(u);
    }
 
    public String watchUser(User user) {
       User me = this.auth.get().getUser();
-      List<String> watching = me.getWatching();
-      watching.add(user.getUsername());
       try {
          utx.begin();
-         getUserCache().replace(me.getUsername(), me);
+         me.getWatching().add(user.getUsername());
+         User watchedUser = (User) getUserCache().get(user.getUsername());
+         watchedUser.getWatchers().add(me.getUsername());
+         getUserCache().replace(watchedUser.getUsername(), watchedUser); //to let Infinispan know the entry has changed -> replicate
+         getUserCache().replace(me.getUsername(), me); //to let Infinispan know the entry has changed -> replicate
          utx.commit();
       } catch (Exception e) {
          if (utx != null) {
@@ -150,10 +156,12 @@ public class UserBean implements Serializable {
    
    public String stopWatchingUser(User user) {
       User me = this.auth.get().getUser();
-      List<String> watching = me.getWatching();
-      watching.remove(user.getUsername());
       try {
          utx.begin();
+         me.getWatching().remove(user.getUsername());
+         User watchedUser = (User) getUserCache().get(user.getUsername());
+         watchedUser.getWatchers().remove(me.getUsername());
+         getUserCache().replace(watchedUser.getUsername(), watchedUser);
          getUserCache().replace(me.getUsername(), me);
          utx.commit();
       } catch (Exception e) {
