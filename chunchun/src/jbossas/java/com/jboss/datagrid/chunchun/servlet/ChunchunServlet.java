@@ -35,28 +35,26 @@ import com.jboss.datagrid.chunchun.session.UserBean;
 public class ChunchunServlet extends HttpServlet {
 
    private static Map<Integer, Boolean> userMap = new HashMap<Integer, Boolean>();   //registered occupied users
-   private static int userCount = 0;
 
    static {
       for (int i = 1; i != InitializeCache.USER_COUNT; i++) {
-         userMap.put(new Integer(i), false);
+         userMap.put(new Integer(i), false); //false == not currently in use == not logged in; true == logged in
       }
    }
 
-   private static synchronized int generateRandomUser() {
-      userCount = 0;
-      int index = ++userCount;
-      while (index != InitializeCache.USER_COUNT && userMap.get(index).equals(true)) {
-         index = ++userCount;
+   private static synchronized int getNextAvailableUser() {
+      int index = 1;
+      while (index != InitializeCache.USER_COUNT) {
+         if (userMap.get(index).equals(false)) {
+            userMap.put(index, true);
+            return index;
+         }
+         index++;
       }
-      if (index == InitializeCache.USER_COUNT) {
-         throw new RuntimeException("No users available in a user pool.");
-      }
-      userMap.put(index, true);
-      return index;
+      throw new RuntimeException("All users logged in - no available users.");
    }
 
-   private static synchronized void unregisterUser(int index) {
+   private static synchronized void markUserAsLoggedOut(int index) {
       userMap.put(index, false);
    }
 
@@ -81,7 +79,7 @@ public class ChunchunServlet extends HttpServlet {
 
          if (!auth.isLoggedIn()) {
             Random r = new Random(System.currentTimeMillis());
-            int randomUserId = ChunchunServlet.generateRandomUser();
+            int randomUserId = ChunchunServlet.getNextAvailableUser();
             String username = "user" + randomUserId;
             String password  = "pass" + randomUserId;
             auth.setUsername(username);
@@ -97,7 +95,7 @@ public class ChunchunServlet extends HttpServlet {
          String indexStr = auth.getUsername().substring(4);
          int index = new Integer(indexStr);
 
-         ChunchunServlet.unregisterUser(index);
+         ChunchunServlet.markUserAsLoggedOut(index);
          auth.logoutFromServlet();
          answer.append("\n").append("User Logged out");
 
