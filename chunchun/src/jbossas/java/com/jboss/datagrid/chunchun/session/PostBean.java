@@ -79,10 +79,6 @@ public class PostBean implements Serializable {
 
    private String message;
 
-   BasicCache<String, Object> userCache;
-
-   BasicCache<PostKey, Object> postCache;
-   
    LinkedList<DisplayPost> recentPosts = new LinkedList<DisplayPost>();
 
    @Inject
@@ -242,18 +238,10 @@ public class PostBean implements Serializable {
    }
 
    private BasicCache<String, Object> getUserCache() {
-      if (userCache != null) {
-         return userCache;
-      } else {
-         return provider.getCacheContainer().getCache("userCache");
-      }
+      return provider.getCacheContainer().getCache("userCache");
    }
 
    private BasicCache<PostKey, Object> getPostCache() {
-      if (postCache != null) {
-         return postCache;
-      } else {
-         return provider.getCacheContainer().getCache("postCache");
-      }
+      return provider.getCacheContainer().getCache("postCache");
    }
 }

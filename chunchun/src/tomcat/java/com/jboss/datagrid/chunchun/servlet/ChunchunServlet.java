@@ -155,7 +155,7 @@ public class ChunchunServlet extends HttpServlet {
          List<User> watchers = userBean.getWatchers();
          for (User u : watchers) {
             if (u.getName().equals(userParam)) {
-               if (!userBean.isWatchedByMe(u)) {
+               if (!userBean.isWatchedByMe(u) && !userBean.isMe(u)) {
                   userBean.watchUser(u);
                   answer.append("\n").append("Started watching user " + u.getName());
                }  else {

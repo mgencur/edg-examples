@@ -21,13 +21,15 @@
  */
 package com.jboss.datagrid.chunchun.model;
 
+import java.io.Serializable;
+
 /**
  * Identifies a post.
  * 
  * @author Martin Gencur
  * 
  */
-public class PostKey {
+public class PostKey implements Serializable {
 
    private String owner;
    

@@ -56,8 +56,6 @@ public class UserBean implements Serializable {
    @Inject
    private CacheContainerProvider provider;
 
-   BasicCache<String, Object> userCache;
-   
    @PostConstruct
    public void initialize() {
       watchedUser = auth.get().getUser(); 
@@ -108,11 +106,7 @@ public class UserBean implements Serializable {
    }
 
    private BasicCache<String, Object> getUserCache() {
-      if (userCache != null) {
-         return userCache;
-      } else {
-         return provider.getCacheContainer().getCache("userCache");
-      }
+      return provider.getCacheContainer().getCache("userCache");
    }
 
    public User getWatchedUser() {
