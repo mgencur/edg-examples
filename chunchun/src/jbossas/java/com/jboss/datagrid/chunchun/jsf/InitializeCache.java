@@ -119,7 +119,7 @@ public class InitializeCache implements SystemEventListener {
          }
 
          // GENERATE RANDOM WATCHERS AND WATCHING FOR EACH USER
-         for (int i = 1; i != USER_COUNT; i++) {
+         for (int i = 1; i <= USER_COUNT; i++) {
             User u = (User) users.get("user" + i);
             for (User watching : generateRandomUsers(u, 20, USER_COUNT)) {
                if (!u.getUsername().equals(watching.getUsername())) {
@@ -129,7 +129,7 @@ public class InitializeCache implements SystemEventListener {
             users.replace("user" + i, u);
          }
 
-         for (int i = 1; i != USER_COUNT; i++) {
+         for (int i = 1; i <= USER_COUNT; i++) {
             User u = (User) users.get("user" + i);
             for (String username: u.getWatching()) {
                User us = (User) users.get(username);

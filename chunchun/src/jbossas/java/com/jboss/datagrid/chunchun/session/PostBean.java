@@ -54,7 +54,8 @@ public class PostBean implements Serializable {
    private static final int INITIAL_POSTS_LIMIT = 30;
    private int loadedPosts = INITIAL_POSTS_LIMIT;
    private static final int INCREASE_LOADED_BY = 50; //increase loadedPosts by
-   private int showedPosts = 10;
+   private static final int INITIAL_SHOWED_POSTS = 10;
+   private int showedPosts = INITIAL_SHOWED_POSTS;
    private static final int INCREASE_SHOWED_BY = 10; //increase showedPosts by
    
    private static final long MINUTE = 60 * 1000;
@@ -243,5 +244,11 @@ public class PostBean implements Serializable {
 
    private BasicCache<PostKey, Object> getPostCache() {
       return provider.getCacheContainer().getCache("postCache");
+   }
+
+   public void resetRecentPosts() {
+      recentPosts = new LinkedList<DisplayPost>();
+      showedPosts = INITIAL_SHOWED_POSTS;
+      loadedPosts = INITIAL_POSTS_LIMIT;
    }
 }

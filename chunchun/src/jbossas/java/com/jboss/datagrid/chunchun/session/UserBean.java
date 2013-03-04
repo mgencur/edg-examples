@@ -113,6 +113,10 @@ public class UserBean implements Serializable {
       return watchedUser;
    }
 
+   public void setWatchedUser(User u) {
+      this.watchedUser = u;
+   }
+
    public String goHome() {
       this.watchedUser = auth.get().getUser();
       return "home";
@@ -168,4 +172,5 @@ public class UserBean implements Serializable {
       }
       return null;
    }
+
 }

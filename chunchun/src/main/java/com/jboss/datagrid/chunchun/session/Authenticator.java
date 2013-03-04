@@ -31,6 +31,7 @@ import javax.inject.Named;
 import org.infinispan.api.BasicCache;
 import com.jboss.datagrid.chunchun.jsf.InitializeCache;
 import com.jboss.datagrid.chunchun.model.User;
+import com.jboss.datagrid.chunchun.session.UserBean;
 
 /**
  * Authenticates a user by username/password.
@@ -53,6 +54,12 @@ public class Authenticator implements Serializable {
    @Inject
    private CacheContainerProvider provider;
 
+   @Inject
+   private UserBean userBean;
+
+   @Inject
+   private PostBean postBean;
+
    public boolean isLoggedIn() {
       return user != null;
    }
@@ -69,6 +76,8 @@ public class Authenticator implements Serializable {
       String currentEncryptedPassword = InitializeCache.hashPassword(password);
       if (storedEncryptedPassword.equals(currentEncryptedPassword)) {
          user = currentUser;
+         userBean.setWatchedUser(user);
+         postBean.resetRecentPosts();
       } else {
          FacesContext.getCurrentInstance().addMessage("msg2", new FacesMessage("Wrong password!"));
       }
