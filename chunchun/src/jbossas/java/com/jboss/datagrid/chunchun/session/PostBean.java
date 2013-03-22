@@ -132,6 +132,10 @@ public class PostBean implements Serializable {
        long now = System.currentTimeMillis();
        List<String> following = auth.get().getUser().getWatching();
        long[] ages = chooseRecentPostsStrategy(following.size());
+       //make sure we have an empty list before reloading, otherwise entries will be contained more than once
+       if (recentPosts.size() > 0) {
+          recentPosts.clear();
+       }
        // add initial entry (oldest possible one)
        recentPosts.add(new DisplayPost());
        // first check only posts newer than 1 hour, then increase maxAge
