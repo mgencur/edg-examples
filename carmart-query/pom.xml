@@ -14,8 +14,7 @@
         <jboss-as-management-port>9999</jboss-as-management-port>
         <jboss-as-management-host>localhost</jboss-as-management-host>
         <jbossas.version>7.5.Final</jbossas.version>
-        <infinispan.version>6.0.0.Final-redhat-2</infinispan.version>
-        <version.hibernate.search>4.4.0.Final-redhat-2</version.hibernate.search>
+        <infinispan.version>6.0.0.Final-redhat-3</infinispan.version>
     </properties>
 
     <dependencies>
